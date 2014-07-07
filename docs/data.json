@@ -1,0 +1,275 @@
+{
+    "project": {
+        "name": "improved-model",
+        "version": "0.0.0"
+    },
+    "files": {
+        "js/__improved-model/when/build-condition.js": {
+            "name": "js/__improved-model/when/build-condition.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/__improved-model/when/index.js": {
+            "name": "js/__improved-model/when/index.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/__improved-model/bind-attribute.js": {
+            "name": "js/__improved-model/bind-attribute.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/index.js": {
+            "name": "js/index.js",
+            "modules": {
+                "improved-model": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "improved-model": {
+            "name": "improved-model",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "js/index.js",
+            "line": 5,
+            "description": "AMD and CJS module."
+        }
+    },
+    "classes": {},
+    "classitems": [
+        {
+            "file": "js/__improved-model/when/build-condition.js",
+            "line": 18,
+            "description": "If criteria is a string, parses it.\nOtherwise, simply return the criteria object.",
+            "params": [
+                {
+                    "name": "criteria",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/when/build-condition.js",
+            "line": 62,
+            "description": "Returns a function that returns a boolean.",
+            "params": [
+                {
+                    "name": "criteria",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/when/index.js",
+            "line": 12,
+            "description": "Runs the condition against a model and\nif successful, executes the callback passing\nthe model itself as the first argument.",
+            "params": [
+                {
+                    "name": "model",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "condition",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "fn",
+                    "description": "[description]",
+                    "type": "Function"
+                },
+                {
+                    "name": "context",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/when/index.js",
+            "line": 33,
+            "description": "Creates an event listener that tracks changes on the model\nand tries to match a criteria.\nWhen the criteria is matched, the callback fn\nis invoked.",
+            "params": [
+                {
+                    "name": "criteria",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "fn",
+                    "description": "[description]",
+                    "type": "Function"
+                },
+                {
+                    "name": "context",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/when/index.js",
+            "line": 56,
+            "description": "Creates a condition tracker that\nwhen matched sets the values\nonto the context (defaults to the model itself)",
+            "params": [
+                {
+                    "name": "criteria",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "values",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/when/index.js",
+            "line": 73,
+            "description": "Sets a situation.",
+            "params": [
+                {
+                    "name": "criteria",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "action",
+                    "description": "[description]",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/when/index.js",
+            "line": 102,
+            "description": "Stands to '_when' as 'listenTo' stands to 'on';",
+            "params": [
+                {
+                    "name": "other",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "criteria",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "fn",
+                    "description": "[description]",
+                    "type": "Function"
+                },
+                {
+                    "name": "context",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/bind-attribute.js",
+            "line": 10,
+            "description": "Sets a situation.",
+            "params": [
+                {
+                    "name": "criteria",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "callback",
+                    "description": "[description]",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        }
+    ],
+    "warnings": [
+        {
+            "message": "Missing item type\nIf criteria is a string, parses it.\nOtherwise, simply return the criteria object.",
+            "line": " js/__improved-model/when/build-condition.js:18"
+        },
+        {
+            "message": "Missing item type\nReturns a function that returns a boolean.",
+            "line": " js/__improved-model/when/build-condition.js:62"
+        },
+        {
+            "message": "Missing item type\nRuns the condition against a model and\nif successful, executes the callback passing\nthe model itself as the first argument.",
+            "line": " js/__improved-model/when/index.js:12"
+        },
+        {
+            "message": "Missing item type\nCreates an event listener that tracks changes on the model\nand tries to match a criteria.\nWhen the criteria is matched, the callback fn\nis invoked.",
+            "line": " js/__improved-model/when/index.js:33"
+        },
+        {
+            "message": "Missing item type\nCreates a condition tracker that\nwhen matched sets the values\nonto the context (defaults to the model itself)",
+            "line": " js/__improved-model/when/index.js:56"
+        },
+        {
+            "message": "Missing item type\nSets a situation.",
+            "line": " js/__improved-model/when/index.js:73"
+        },
+        {
+            "message": "Missing item type\nStands to '_when' as 'listenTo' stands to 'on';",
+            "line": " js/__improved-model/when/index.js:102"
+        },
+        {
+            "message": "Missing item type\nSets a situation.",
+            "line": " js/__improved-model/bind-attribute.js:10"
+        }
+    ]
+}

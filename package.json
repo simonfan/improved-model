@@ -1,0 +1,33 @@
+{
+  "name": "improved-model",
+  "main": "./js",
+  "version": "0.0.0",
+  "description": "Improved BackboneJS model.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/simonfan/improved-model.git"
+  },
+  "dependencies": {
+    "amdefine": ">=0.1.0",
+    "lodash": "^2.4.1",
+    "lowercase-backbone": "^0.2.7",
+    "object-query": "^0.1.4",
+    "swtch": "^0.2.2"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-connect": "~0.5.0",
+    "grunt-bower-requirejs": "~0.7.1",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-yuidoc": "~0.5.0",
+    "grunt-contrib-jshint": "~0.7.2",
+    "grunt-contrib-requirejs": "~0.4.1",
+    "grunt-concurrent": "~0.5.0",
+    "should": "~2.1.0",
+    "mocha": "~1.15.0",
+    "grunt-simple-mocha": "~0.4.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  }
+}

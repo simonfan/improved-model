@@ -1,0 +1,22 @@
+{
+  "name": "improved-model",
+  "main": "built/improved-model.js",
+  "version": "0.0.0",
+  "description": "Improved BackboneJS model.",
+  "dependencies": {
+    "lowercase-backbone": "0.2.7",
+    "object-query": "0.1.4",
+    "lodash": "~2.4.1",
+    "swtch": "~0.2.2"
+  },
+  "devDependencies": {
+    "requirejs": "*",
+    "requirejs-text": "*",
+    "underscore": "*",
+    "jquery": "*",
+    "qunit": "*"
+  },
+  "resolutions": {
+    "subject": "0.5.9"
+  }
+}
