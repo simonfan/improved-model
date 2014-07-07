@@ -25,13 +25,6 @@
             "fors": {},
             "namespaces": {}
         },
-        "js/__improved-model/__when.js": {
-            "name": "js/__improved-model/__when.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
-        },
         "js/__improved-model/swtch.js": {
             "name": "js/__improved-model/swtch.js",
             "modules": {},
@@ -122,139 +115,8 @@
         },
         {
             "file": "js/__improved-model/model-swtch/index.js",
-            "line": 30,
+            "line": 50,
             "description": "Override the when method in order to introduce a condition builder.",
-            "class": ""
-        },
-        {
-            "file": "js/__improved-model/__when.js",
-            "line": 10,
-            "description": "Runs the condition against a model and\nif successful, executes the callback passing\nthe model itself as the first argument.",
-            "params": [
-                {
-                    "name": "model",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "condition",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "fn",
-                    "description": "[description]",
-                    "type": "Function"
-                },
-                {
-                    "name": "context",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
-            "class": ""
-        },
-        {
-            "file": "js/__improved-model/__when.js",
-            "line": 31,
-            "description": "Creates an event listener that tracks changes on the model\nand tries to match a criteria.\nWhen the criteria is matched, the callback fn\nis invoked.",
-            "params": [
-                {
-                    "name": "criteria",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "fn",
-                    "description": "[description]",
-                    "type": "Function"
-                },
-                {
-                    "name": "context",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
-            "class": ""
-        },
-        {
-            "file": "js/__improved-model/__when.js",
-            "line": 54,
-            "description": "Creates a condition tracker that\nwhen matched sets the values\nonto the context (defaults to the model itself)",
-            "params": [
-                {
-                    "name": "criteria",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "values",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "class": ""
-        },
-        {
-            "file": "js/__improved-model/__when.js",
-            "line": 71,
-            "description": "Sets a situation.",
-            "params": [
-                {
-                    "name": "criteria",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "action",
-                    "description": "[description]",
-                    "type": "Function"
-                }
-            ],
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
-            "class": ""
-        },
-        {
-            "file": "js/__improved-model/__when.js",
-            "line": 100,
-            "description": "Stands to '_when' as 'listenTo' stands to 'on';",
-            "params": [
-                {
-                    "name": "other",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "criteria",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "fn",
-                    "description": "[description]",
-                    "type": "Function"
-                },
-                {
-                    "name": "context",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
             "class": ""
         },
         {
@@ -343,27 +205,7 @@
         },
         {
             "message": "Missing item type\nOverride the when method in order to introduce a condition builder.",
-            "line": " js/__improved-model/model-swtch/index.js:30"
-        },
-        {
-            "message": "Missing item type\nRuns the condition against a model and\nif successful, executes the callback passing\nthe model itself as the first argument.",
-            "line": " js/__improved-model/__when.js:10"
-        },
-        {
-            "message": "Missing item type\nCreates an event listener that tracks changes on the model\nand tries to match a criteria.\nWhen the criteria is matched, the callback fn\nis invoked.",
-            "line": " js/__improved-model/__when.js:31"
-        },
-        {
-            "message": "Missing item type\nCreates a condition tracker that\nwhen matched sets the values\nonto the context (defaults to the model itself)",
-            "line": " js/__improved-model/__when.js:54"
-        },
-        {
-            "message": "Missing item type\nSets a situation.",
-            "line": " js/__improved-model/__when.js:71"
-        },
-        {
-            "message": "Missing item type\nStands to '_when' as 'listenTo' stands to 'on';",
-            "line": " js/__improved-model/__when.js:100"
+            "line": " js/__improved-model/model-swtch/index.js:50"
         },
         {
             "message": "Missing item type\nCreate a model swtch related to this model.",

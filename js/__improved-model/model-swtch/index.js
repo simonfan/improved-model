@@ -19,12 +19,32 @@ define(function defImprovedModelSwtch(require, exports, module) {
 
 	var modelSwtch = module.exports = swtch.extend({
 		initialize: function initializeModelSwtch(cases, options) {
+			// save reference to the model
+			// do this before initializing the swtch
+			// as swtch initialization tries to call
+			// when method for each of the cases.
+			this.model = options.model;
+
+			// parse out cases
+			var _cases;
+
+			if (_.isArray(cases)) {
+				// array of condition definiitons.
+				_cases = cases;
+			} else {
+				// object that has to be parsed out.
+				_cases = [];
+
+				_.each(cases, function (action, criteria) {
+					_cases.push({
+						condition: criteria,
+						value    : action,
+					});
+				});
+			}
 
 			// the original intialize method only takes the cases argument.
-			_initializeSwtch.call(this, cases);
-
-			// save reference to the model
-			this.model = options.model;
+			_initializeSwtch.call(this, _cases);
 		},
 
 		/**
@@ -32,15 +52,18 @@ define(function defImprovedModelSwtch(require, exports, module) {
 		 *
 		 */
 		when: function modelSwtchWhen(criteria, action, context) {
+			var args = _.toArray(arguments);
 
-				// build the condition
-			var condition = buildCondition(this.model, criteria),
-				// build the callback
-				callback  = buildCallback(this.model, action);
+			if (criteria !== 'default') {
 
-			// rebuild the arguments
-			var args = Array.prototype.slice.call(arguments, 1);
-			args.unshift(condition);
+					// build the condition
+				var condition = buildCondition(this.model, criteria),
+					// build the callback
+					callback  = buildCallback(this.model, action);
+
+				// rebuild the arguments
+				args = [condition, callback].concat(args.slice(2));
+			}
 
 			// invoke the original when method
 			return _when.apply(this, args);
