@@ -4,22 +4,36 @@
         "version": "0.0.0"
     },
     "files": {
-        "js/__improved-model/when/build-condition.js": {
-            "name": "js/__improved-model/when/build-condition.js",
+        "js/__improved-model/model-swtch/build-callback.js": {
+            "name": "js/__improved-model/model-swtch/build-callback.js",
             "modules": {},
             "classes": {},
             "fors": {},
             "namespaces": {}
         },
-        "js/__improved-model/when/index.js": {
-            "name": "js/__improved-model/when/index.js",
+        "js/__improved-model/model-swtch/build-condition.js": {
+            "name": "js/__improved-model/model-swtch/build-condition.js",
             "modules": {},
             "classes": {},
             "fors": {},
             "namespaces": {}
         },
-        "js/__improved-model/bind-attribute.js": {
-            "name": "js/__improved-model/bind-attribute.js",
+        "js/__improved-model/model-swtch/index.js": {
+            "name": "js/__improved-model/model-swtch/index.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/__improved-model/__when.js": {
+            "name": "js/__improved-model/__when.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/__improved-model/swtch.js": {
+            "name": "js/__improved-model/swtch.js",
             "modules": {},
             "classes": {},
             "fors": {},
@@ -51,7 +65,29 @@
     "classes": {},
     "classitems": [
         {
-            "file": "js/__improved-model/when/build-condition.js",
+            "file": "js/__improved-model/model-swtch/build-callback.js",
+            "line": 14,
+            "description": "Builds the callback function according to the type of the action.",
+            "params": [
+                {
+                    "name": "model",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "action",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/model-swtch/build-condition.js",
             "line": 18,
             "description": "If criteria is a string, parses it.\nOtherwise, simply return the criteria object.",
             "params": [
@@ -68,7 +104,7 @@
             "class": ""
         },
         {
-            "file": "js/__improved-model/when/build-condition.js",
+            "file": "js/__improved-model/model-swtch/build-condition.js",
             "line": 62,
             "description": "Returns a function that returns a boolean.",
             "params": [
@@ -85,8 +121,14 @@
             "class": ""
         },
         {
-            "file": "js/__improved-model/when/index.js",
-            "line": 12,
+            "file": "js/__improved-model/model-swtch/index.js",
+            "line": 30,
+            "description": "Override the when method in order to introduce a condition builder.",
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/__when.js",
+            "line": 10,
             "description": "Runs the condition against a model and\nif successful, executes the callback passing\nthe model itself as the first argument.",
             "params": [
                 {
@@ -117,8 +159,8 @@
             "class": ""
         },
         {
-            "file": "js/__improved-model/when/index.js",
-            "line": 33,
+            "file": "js/__improved-model/__when.js",
+            "line": 31,
             "description": "Creates an event listener that tracks changes on the model\nand tries to match a criteria.\nWhen the criteria is matched, the callback fn\nis invoked.",
             "params": [
                 {
@@ -144,8 +186,8 @@
             "class": ""
         },
         {
-            "file": "js/__improved-model/when/index.js",
-            "line": 56,
+            "file": "js/__improved-model/__when.js",
+            "line": 54,
             "description": "Creates a condition tracker that\nwhen matched sets the values\nonto the context (defaults to the model itself)",
             "params": [
                 {
@@ -162,8 +204,8 @@
             "class": ""
         },
         {
-            "file": "js/__improved-model/when/index.js",
-            "line": 73,
+            "file": "js/__improved-model/__when.js",
+            "line": 71,
             "description": "Sets a situation.",
             "params": [
                 {
@@ -184,8 +226,8 @@
             "class": ""
         },
         {
-            "file": "js/__improved-model/when/index.js",
-            "line": 102,
+            "file": "js/__improved-model/__when.js",
+            "line": 100,
             "description": "Stands to '_when' as 'listenTo' stands to 'on';",
             "params": [
                 {
@@ -216,19 +258,14 @@
             "class": ""
         },
         {
-            "file": "js/__improved-model/bind-attribute.js",
-            "line": 10,
-            "description": "Sets a situation.",
+            "file": "js/__improved-model/swtch.js",
+            "line": 11,
+            "description": "Create a model swtch related to this model.",
             "params": [
                 {
-                    "name": "criteria",
+                    "name": "cases",
                     "description": "[description]",
                     "type": "[type]"
-                },
-                {
-                    "name": "callback",
-                    "description": "[description]",
-                    "type": "Function"
                 }
             ],
             "return": {
@@ -236,40 +273,113 @@
                 "type": "[type]"
             },
             "class": ""
+        },
+        {
+            "file": "js/__improved-model/swtch.js",
+            "line": 37,
+            "description": "Sets a swtch onto another model.",
+            "params": [
+                {
+                    "name": "other",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "cases",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/index.js",
+            "line": 31,
+            "description": "Overrride default model initialization.",
+            "params": [
+                {
+                    "name": "attributes",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "options",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": "",
+            "module": "improved-model"
+        },
+        {
+            "file": "js/index.js",
+            "line": 58,
+            "description": "Determines which execution should be done (all|first)",
+            "type": "{String}",
+            "class": "",
+            "module": "improved-model"
         }
     ],
     "warnings": [
         {
+            "message": "Missing item type\nBuilds the callback function according to the type of the action.",
+            "line": " js/__improved-model/model-swtch/build-callback.js:14"
+        },
+        {
             "message": "Missing item type\nIf criteria is a string, parses it.\nOtherwise, simply return the criteria object.",
-            "line": " js/__improved-model/when/build-condition.js:18"
+            "line": " js/__improved-model/model-swtch/build-condition.js:18"
         },
         {
             "message": "Missing item type\nReturns a function that returns a boolean.",
-            "line": " js/__improved-model/when/build-condition.js:62"
+            "line": " js/__improved-model/model-swtch/build-condition.js:62"
+        },
+        {
+            "message": "Missing item type\nOverride the when method in order to introduce a condition builder.",
+            "line": " js/__improved-model/model-swtch/index.js:30"
         },
         {
             "message": "Missing item type\nRuns the condition against a model and\nif successful, executes the callback passing\nthe model itself as the first argument.",
-            "line": " js/__improved-model/when/index.js:12"
+            "line": " js/__improved-model/__when.js:10"
         },
         {
             "message": "Missing item type\nCreates an event listener that tracks changes on the model\nand tries to match a criteria.\nWhen the criteria is matched, the callback fn\nis invoked.",
-            "line": " js/__improved-model/when/index.js:33"
+            "line": " js/__improved-model/__when.js:31"
         },
         {
             "message": "Missing item type\nCreates a condition tracker that\nwhen matched sets the values\nonto the context (defaults to the model itself)",
-            "line": " js/__improved-model/when/index.js:56"
+            "line": " js/__improved-model/__when.js:54"
         },
         {
             "message": "Missing item type\nSets a situation.",
-            "line": " js/__improved-model/when/index.js:73"
+            "line": " js/__improved-model/__when.js:71"
         },
         {
             "message": "Missing item type\nStands to '_when' as 'listenTo' stands to 'on';",
-            "line": " js/__improved-model/when/index.js:102"
+            "line": " js/__improved-model/__when.js:100"
         },
         {
-            "message": "Missing item type\nSets a situation.",
-            "line": " js/__improved-model/bind-attribute.js:10"
+            "message": "Missing item type\nCreate a model swtch related to this model.",
+            "line": " js/__improved-model/swtch.js:11"
+        },
+        {
+            "message": "Missing item type\nSets a swtch onto another model.",
+            "line": " js/__improved-model/swtch.js:37"
+        },
+        {
+            "message": "Missing item type\nOverrride default model initialization.",
+            "line": " js/index.js:31"
+        },
+        {
+            "message": "Missing item type\nDetermines which execution should be done (all|first)",
+            "line": " js/index.js:58"
         }
     ]
 }

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>js/__improved-model/bind-attribute.js - improved-model</title>
+    <title>js/__improved-model/model-swtch/build-condition.js - improved-model</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -82,7 +82,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: js/__improved-model/bind-attribute.js</h1>
+                        <h1 class="file-heading">File: js/__improved-model/model-swtch/build-condition.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -93,17 +93,76 @@ if (typeof define !== &#x27;function&#x27;) { var define = require(&#x27;amdefin
 define(function (require, exports, module) {
 	&#x27;use strict&#x27;;
 
-	var objectQuery = require(&#x27;object-query&#x27;);
+	var objectQuery = require(&#x27;object-query&#x27;),
+		_           = require(&#x27;lodash&#x27;);
+
+
+
+	var or    = /\s*\|\|\s*/g,
+		and   = /\s*&amp;&amp;\s*/g,
+		colon = /\s*:\s*/g,
+		pipe  = /\s*\|\s*/g;
 
 	/**
-	 * Sets a situation.
+	 * If criteria is a string, parses it.
+	 * Otherwise, simply return the criteria object.
 	 *
-	 * @param  {[type]}   criteria [description]
-	 * @param  {Function} callback [description]
-	 * @return {[type]}            [description]
+	 * @param  {[type]} criteria [description]
+	 * @return {[type]}          [description]
 	 */
-	exports.when = function whenModel(criteria, callback) {
+	function parseCriteriaStr(criteriaStr) {
 
+		// examples:
+		// &#x27;attrName:attrValue&#x27;
+		// &#x27;attrName:maybeThis|orThat|orThatOther &amp;&amp; anotherAttr:anotherVal || yetAnother:val&#x27;
+
+		// [1] split ORs
+		var ors = criteriaStr.split(or);
+
+		var possibilities = _.map(ors, function (criteriaStr) {
+			// criteriaStr: attr1:v1|v2|v3 &amp;&amp; attr2:v4
+
+			var criteria = {};
+
+			_.each(criteriaStr.split(and), function (criteriaStr) {
+
+				// criteriaStr: value:someValue|orAnother
+
+				var split = criteriaStr.split(colon);
+
+				if (!split[1]) {
+					throw new Error(&#x27;No value found for &#x27; + key + &#x27; criterion.&#x27;);
+				}
+
+				var key   = split[0],
+					value = split[1].split(pipe);
+
+				// if value is an array of a single item, unwrap it
+				criteria[key] = (value.length &gt; 1) ? value : value[0];
+			});
+
+			return criteria;
+		});
+
+		return possibilities;
+	}
+
+	/**
+	 * Returns a function that returns a boolean.
+	 *
+	 * @param  {[type]} criteria [description]
+	 * @return {[type]}          [description]
+	 */
+	module.exports = function buildCondition(model, criteria) {
+
+		// parse out the criteria
+		if (_.isString(criteria)) {
+			criteria = parseCriteriaStr(criteria);
+		}
+
+		// return a partialized objectQuery that
+		// already has the model.
+		return _.partial(objectQuery(criteria), model.attributes);
 	};
 });
 

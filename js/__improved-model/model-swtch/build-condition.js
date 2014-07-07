@@ -65,11 +65,15 @@ define(function (require, exports, module) {
 	 * @param  {[type]} criteria [description]
 	 * @return {[type]}          [description]
 	 */
-	exports.condition = function buildCondition(criteria) {
+	module.exports = function buildCondition(model, criteria) {
+
+		// parse out the criteria
 		if (_.isString(criteria)) {
 			criteria = parseCriteriaStr(criteria);
 		}
 
-		return objectQuery(criteria);
+		// return a partialized objectQuery that
+		// already has the model.
+		return _.partial(objectQuery(criteria), model.attributes);
 	};
 });

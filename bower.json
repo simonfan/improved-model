@@ -1,7 +1,7 @@
 {
   "name": "improved-model",
   "main": "built/improved-model.js",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Improved BackboneJS model.",
   "dependencies": {
     "lowercase-backbone": "0.2.7",

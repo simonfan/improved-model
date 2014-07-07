@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>js/index.js - improved-model</title>
+    <title>js/__improved-model/swtch.js - improved-model</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -82,95 +82,71 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: js/index.js</h1>
+                        <h1 class="file-heading">File: js/__improved-model/swtch.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-//     improved-model
-//     (c) simonfan
-//     improved-model is licensed under the MIT terms.
-
-/**
- * AMD and CJS module.
- *
- * @module improved-model
- */
-
 /* jshint ignore:start */
 if (typeof define !== &#x27;function&#x27;) { var define = require(&#x27;amdefine&#x27;)(module) }
 /* jshint ignore:end */
 
-define(function (require, exports, module) {
+define(function (require, exports) {
 	&#x27;use strict&#x27;;
 
+		// the modelSwtch constructor.
+	var modelSwtch = require(&#x27;./model-swtch/index&#x27;);
 
-	var backbone = require(&#x27;lowercase-backbone&#x27;),
-		_        = require(&#x27;lodash&#x27;);
+	/**
+	 * Create a model swtch related to this model.
+	 *
+	 * @param  {[type]} cases [description]
+	 * @return {[type]}       [description]
+	 */
+	exports.swtch = function defineSwtch(cases) {
 
-	// direct reference to the backbone.model initialization logic
-	var _initializeModel = backbone.model.prototype.initialize;
+		// instantiate the modelSwtch
+		var mswtch = modelSwtch(cases, { model: this });
 
+		// get execution method, based on executionType option
+		var _exec = this.executionType === &#x27;all&#x27; ? mswtch.exec : mswtch.execFirst;
 
-	// options that should be set directly to the object.
-	var improvedModelOptions = [&#x27;cases&#x27;, &#x27;executionType&#x27;];
+		// set event listeners for execution
+		this.on(&#x27;change&#x27;, function (model) {
+			// invoke the exec.
+			_exec.call(mswtch, model.attributes);
+		});
 
-	var model = module.exports = backbone.model.extend({
+		// exec once
+		_exec.call(mswtch, this.attributes);
 
-		/**
-		 * Overrride default model initialization.
-		 *
-		 * @param  {[type]} attributes [description]
-		 * @param  {[type]} options    [description]
-		 * @return {[type]}            [description]
-		 */
-		initialize: function initializeImprovedModel(attributes, options) {
+		return mswtch;
+	};
 
-			// initialize the backbone model
-			_initializeModel.apply(this, arguments);
+	/**
+	 * Sets a swtch onto another model.
+	 *
+	 * @param  {[type]} other [description]
+	 * @param  {[type]} cases [description]
+	 * @return {[type]}       [description]
+	 */
+	exports.swtchOther = function defineSwtchOther(other, cases) {
 
+		// instantiate the mswtch
+		var mswtch = modelSwtch(cases, { model: other });
 
+		// get execution method
+		var _exec = this.executionType === &#x27;all&#x27; ? mswtch.exec : mswtch.execFirst;
 
+		// set event listeners.
+		this.listenTo(other, &#x27;change&#x27;, function (model) {
+			_exec.call(mswtch, model.attributes);
+		});
 
-			// get options
-			options = options || {};
-			_.each(improvedModelOptions, function (opt) {
+		// exec once
+		_exec.call(mswtch, other.attributes);
 
-				this[opt] = options[opt] || this[opt];
-
-			}, this);
-
-			// create the main swtch
-			this.mainSwtch = this.swtch(this.cases);
-		},
-
-		/**
-		 * Determines which execution should be done (all|first)
-		 *
-		 * @type {String}
-		 */
-		executionType: &#x27;all&#x27;,
-		cases: {},
-
-
-		when: function whenThis(criteria, callback, context) {
-			this.mainSwtch.when(criteria, callback, context);
-
-			return this;
-		},
-
-		whenOther: function whenOther(other, criteria, callback, context) {
-
-			// create a swtch
-			var mswtch = this.swtchOther(other);
-
-			mswtch.when(criteria, callback, context);
-
-			return this;
-		}
-
-	});
-
-	model.assignProto(require(&#x27;./__improved-model/swtch&#x27;));
+		return mswtch;
+	};
 });
 
     </pre>

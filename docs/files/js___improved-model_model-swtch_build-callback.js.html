@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>js/__improved-model/when/index.js - improved-model</title>
+    <title>js/__improved-model/model-swtch/build-callback.js - improved-model</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -82,7 +82,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: js/__improved-model/when/index.js</h1>
+                        <h1 class="file-heading">File: js/__improved-model/model-swtch/build-callback.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -95,140 +95,25 @@ define(function (require, exports, module) {
 
 	var _ = require(&#x27;lodash&#x27;);
 
-	var buildCondition = require(&#x27;./build-condition&#x27;);
-
-	/**
-	 * Runs the condition against a model and
-	 * if successful, executes the callback passing
-	 * the model itself as the first argument.
-	 *
-	 * @param  {[type]}   model     [description]
-	 * @param  {[type]}   condition [description]
-	 * @param  {Function} fn        [description]
-	 * @param  {[type]}   context   [description]
-	 * @return {[type]}             [description]
-	 */
-	function _execCallback(model, condition, fn, context) {
-		// run the condition fn
-		if (condition(model.attributes)) {
-
-			// exec callback
-			fn.apply(context, [model]);
-		}
+	function setCallback(model, values) {
+		model.set(values);
 	}
 
-
 	/**
-	 * Creates an event listener that tracks changes on the model
-	 * and tries to match a criteria.
-	 * When the criteria is matched, the callback fn
-	 * is invoked.
+	 * Builds the callback function according to the type of the action.
 	 *
-	 * @param  {[type]}   criteria [description]
-	 * @param  {Function} fn       [description]
-	 * @param  {[type]}   context  [description]
-	 * @return {[type]}            [description]
+	 * @param  {[type]} model  [description]
+	 * @param  {[type]} action [description]
+	 * @return {[type]}        [description]
 	 */
-	function _whenThisDo(criteria, fn, context) {
+	module.exports = function buildCallback(model, action) {
 
-		// create a condition fn based on the criteria.
-		var condition = buildCondition(criteria);
-
-		// listen to change events.
-		this.on(&#x27;change&#x27;, _.partial(_execCallback, this, condition, fn, context), this);
-
-	}
-
-
-
-	/**
-	 * Creates a condition tracker that
-	 * when matched sets the values
-	 * onto the context (defaults to the model itself)
-	 *
-	 * @param {[type]} criteria [description]
-	 * @param {[type]} values   [description]
-	 */
-	function _whenThisSet(criteria, values) {
-		// build a callback fn
-		var setCallback = _.partial(this.set, values);
-
-		// create a normal when condition
-		_whenThisDo.call(this, criteria, setCallback, this);
-	}
-
-
-	/**
-	 * Sets a situation.
-	 *
-	 * @param  {[type]}   criteria [description]
-	 * @param  {Function} action   [description]
-	 * @return {[type]}            [description]
-	 */
-	exports.when = function whenThis(criteria, action, context) {
-
-
-		// straight callback function
 		if (_.isFunction(action)) {
-			_whenThisDo.apply(this, arguments);
-
-		} else if (_.isObject(action)) {
-			_whenThisSet.apply(this, arguments);
-		}
-
-		// always return this;
-		return this;
-	};
-
-
-
-
-
-
-
-
-	/**
-	 * Stands to &#x27;_when&#x27; as &#x27;listenTo&#x27; stands to &#x27;on&#x27;;
-	 *
-	 * @param  {[type]}   other    [description]
-	 * @param  {[type]}   criteria [description]
-	 * @param  {Function} fn       [description]
-	 * @param  {[type]}   context  [description]
-	 * @return {[type]}            [description]
-	 */
-	function _whenOtherDo(other, criteria, fn) {
-
-		// build condition.
-		var condition = buildCondition(criteria);
-
-		// context defaults to &#x27;this&#x27;, as &#x27;listenTo&#x27; would do.
-		context = context || this;
-
-		// create listener.
-		this.listenTo(other, &#x27;change&#x27;, _.partial(_execCallback, other, condition, fn, this));
-
-	}
-
-
-
-
-	function _whenOtherSet(other, criteria, values) {
-		// build a callback fn
-		var setCallback = _.partial(this.set, values);
-
-		// create a normal when condition
-		_whenOtherDo.call(this, criteria, setCallback, this);
-	}
-
-
-	exports.whenOther = function whenOther(other, criteria, action) {
-
-		// straight callback function
-		if (_.isFunction(action)) {
-			_whenOtherDo.apply(this, arguments);
-
-		} else if (_.isObject(action)) {
-			_whenOtherSet.apply(this, arguments);
+			// simple callback
+			return _.partial(action, model);
+		} else {
+			// setting callback
+			return _.partial(setCallback, model, action);
 		}
 	};
 });

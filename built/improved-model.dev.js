@@ -1,3 +1,8 @@
+//     swtch
+//     (c) simonfan
+//     swtch is licensed under the MIT terms.
+
+define("__swtch/evaluate",["require","exports","module","lodash"],function(t,e){function n(){return i.find(this.cases,function(t){return"default"===t.condition})}var i=t("lodash");e.first=function(t){var e=i.find(this.cases,function(e){return this.match(e.condition,t)},this);return e=e||n.call(this)},e.all=function(t){var e=i.filter(this.cases,function(e){return this.match(e.condition,t)},this);if(0===e.length){var s=n.call(this);s&&e.push(s)}return e}}),define("__swtch/exec",["require","exports","module","lodash"],function(t,e){var n=t("lodash");e.execFirst=function(t){var e=this.first(t);return e?this.execCase(e,t):void 0},e.exec=function(t){var e=this.all(t);return n.map(e,function(e){return this.execCase(e,t)},this)},e.execCase=function(t){return t.value.call(t.context)}}),define("swtch",["require","exports","module","lodash","subject","./__swtch/evaluate","./__swtch/exec"],function(t,e,n){var i=t("lodash"),s=t("subject"),r=n.exports=s({initialize:function(t){this.cases=[],i.each(t,function(t){this.when(t.condition,t.value)},this)},match:function(t,e){return i.isRegExp(t)?t.test(e):i.isFunction(t)?t(e):t===e},when:function(){var t;return t=1===arguments.length&&i.isObject(arguments[0])?arguments[0]:{condition:arguments[0],value:arguments[1],context:arguments[2]},this.cases.push(t),this},d_fault:function(t,e){return this.when("default",t,e),this}});r.assignProto(t("./__swtch/evaluate")).assignProto(t("./__swtch/exec"))});
 //     Iterator
 //     (c) simonfan
 //     Iterator is licensed under the MIT terms.
@@ -22,7 +27,7 @@ define("__object-query__/operators/match",["require","exports","module","lodash"
 
 /* jshint ignore:end */
 
-define('__improved-model/when/build-condition',['require','exports','module','object-query','lodash'],function (require, exports, module) {
+define('__improved-model/model-swtch/build-condition',['require','exports','module','object-query','lodash'],function (require, exports, module) {
 	
 
 	var objectQuery = require('object-query'),
@@ -85,12 +90,16 @@ define('__improved-model/when/build-condition',['require','exports','module','ob
 	 * @param  {[type]} criteria [description]
 	 * @return {[type]}          [description]
 	 */
-	module.exports = function buildCondition(criteria) {
+	module.exports = function buildCondition(model, criteria) {
+
+		// parse out the criteria
 		if (_.isString(criteria)) {
 			criteria = parseCriteriaStr(criteria);
 		}
 
-		return objectQuery(criteria);
+		// return a partialized objectQuery that
+		// already has the model.
+		return _.partial(objectQuery(criteria), model.attributes);
 	};
 });
 
@@ -98,146 +107,144 @@ define('__improved-model/when/build-condition',['require','exports','module','ob
 
 /* jshint ignore:end */
 
-define('__improved-model/when/index',['require','exports','module','lodash','./build-condition'],function (require, exports, module) {
+define('__improved-model/model-swtch/build-callback',['require','exports','module','lodash'],function (require, exports, module) {
 	
 
 	var _ = require('lodash');
 
-	var buildCondition = require('./build-condition');
-
-	/**
-	 * Runs the condition against a model and
-	 * if successful, executes the callback passing
-	 * the model itself as the first argument.
-	 *
-	 * @param  {[type]}   model     [description]
-	 * @param  {[type]}   condition [description]
-	 * @param  {Function} fn        [description]
-	 * @param  {[type]}   context   [description]
-	 * @return {[type]}             [description]
-	 */
-	function _execCallback(model, condition, fn, context) {
-		// run the condition fn
-		if (condition(model.attributes)) {
-
-			// exec callback
-			fn.apply(context, [model]);
-		}
+	function setCallback(model, values) {
+		model.set(values);
 	}
 
-
 	/**
-	 * Creates an event listener that tracks changes on the model
-	 * and tries to match a criteria.
-	 * When the criteria is matched, the callback fn
-	 * is invoked.
+	 * Builds the callback function according to the type of the action.
 	 *
-	 * @param  {[type]}   criteria [description]
-	 * @param  {Function} fn       [description]
-	 * @param  {[type]}   context  [description]
-	 * @return {[type]}            [description]
+	 * @param  {[type]} model  [description]
+	 * @param  {[type]} action [description]
+	 * @return {[type]}        [description]
 	 */
-	function _whenThisDo(criteria, fn, context) {
+	module.exports = function buildCallback(model, action) {
 
-		// create a condition fn based on the criteria.
-		var condition = buildCondition(criteria);
-
-		// listen to change events.
-		this.on('change', _.partial(_execCallback, this, condition, fn, context), this);
-
-	}
-
-
-
-	/**
-	 * Creates a condition tracker that
-	 * when matched sets the values
-	 * onto the context (defaults to the model itself)
-	 *
-	 * @param {[type]} criteria [description]
-	 * @param {[type]} values   [description]
-	 */
-	function _whenThisSet(criteria, values) {
-		// build a callback fn
-		var setCallback = _.partial(this.set, values);
-
-		// create a normal when condition
-		_whenThisDo.call(this, criteria, setCallback, this);
-	}
-
-
-	/**
-	 * Sets a situation.
-	 *
-	 * @param  {[type]}   criteria [description]
-	 * @param  {Function} action   [description]
-	 * @return {[type]}            [description]
-	 */
-	exports.when = function whenThis(criteria, action, context) {
-
-
-		// straight callback function
 		if (_.isFunction(action)) {
-			_whenThisDo.apply(this, arguments);
-
-		} else if (_.isObject(action)) {
-			_whenThisSet.apply(this, arguments);
+			// simple callback
+			return _.partial(action, model);
+		} else {
+			// setting callback
+			return _.partial(setCallback, model, action);
 		}
+	};
+});
 
-		// always return this;
-		return this;
+/* jshint ignore:start */
+
+/* jshint ignore:end */
+
+define('__improved-model/model-swtch/index',['require','exports','module','swtch','lodash','./build-condition','./build-callback'],function defImprovedModelSwtch(require, exports, module) {
+
+	var swtch = require('swtch'),
+		_     = require('lodash');
+
+
+		// the condition builder
+	var buildCondition = require('./build-condition'),
+		// the callback builder
+		buildCallback  = require('./build-callback');
+
+	// direct reference to original methods
+	var _initializeSwtch = swtch.prototype.initialize,
+		_when            = swtch.prototype.when;
+
+	var modelSwtch = module.exports = swtch.extend({
+		initialize: function initializeModelSwtch(cases, options) {
+
+			// the original intialize method only takes the cases argument.
+			_initializeSwtch.call(this, cases);
+
+			// save reference to the model
+			this.model = options.model;
+		},
+
+		/**
+		 * Override the when method in order to introduce a condition builder.
+		 *
+		 */
+		when: function modelSwtchWhen(criteria, action, context) {
+
+				// build the condition
+			var condition = buildCondition(this.model, criteria),
+				// build the callback
+				callback  = buildCallback(this.model, action);
+
+			// rebuild the arguments
+			var args = Array.prototype.slice.call(arguments, 1);
+			args.unshift(condition);
+
+			// invoke the original when method
+			return _when.apply(this, args);
+		}
+	});
+});
+
+/* jshint ignore:start */
+
+/* jshint ignore:end */
+
+define('__improved-model/swtch',['require','exports','module','./model-swtch/index'],function (require, exports) {
+	
+
+		// the modelSwtch constructor.
+	var modelSwtch = require('./model-swtch/index');
+
+	/**
+	 * Create a model swtch related to this model.
+	 *
+	 * @param  {[type]} cases [description]
+	 * @return {[type]}       [description]
+	 */
+	exports.swtch = function defineSwtch(cases) {
+
+		// instantiate the modelSwtch
+		var mswtch = modelSwtch(cases, { model: this });
+
+		// get execution method, based on executionType option
+		var _exec = this.executionType === 'all' ? mswtch.exec : mswtch.execFirst;
+
+		// set event listeners for execution
+		this.on('change', function (model) {
+			// invoke the exec.
+			_exec.call(mswtch, model.attributes);
+		});
+
+		// exec once
+		_exec.call(mswtch, this.attributes);
+
+		return mswtch;
 	};
 
-
-
-
-
-
-
-
 	/**
-	 * Stands to '_when' as 'listenTo' stands to 'on';
+	 * Sets a swtch onto another model.
 	 *
-	 * @param  {[type]}   other    [description]
-	 * @param  {[type]}   criteria [description]
-	 * @param  {Function} fn       [description]
-	 * @param  {[type]}   context  [description]
-	 * @return {[type]}            [description]
+	 * @param  {[type]} other [description]
+	 * @param  {[type]} cases [description]
+	 * @return {[type]}       [description]
 	 */
-	function _whenOtherDo(other, criteria, fn) {
+	exports.swtchOther = function defineSwtchOther(other, cases) {
 
-		// build condition.
-		var condition = buildCondition(criteria);
+		// instantiate the mswtch
+		var mswtch = modelSwtch(cases, { model: other });
 
-		// context defaults to 'this', as 'listenTo' would do.
-		context = context || this;
+		// get execution method
+		var _exec = this.executionType === 'all' ? mswtch.exec : mswtch.execFirst;
 
-		// create listener.
-		this.listenTo(other, 'change', _.partial(_execCallback, other, condition, fn, this));
+		// set event listeners.
+		this.listenTo(other, 'change', function (model) {
+			_exec.call(mswtch, model.attributes);
+		});
 
-	}
+		// exec once
+		_exec.call(mswtch, other.attributes);
 
-
-
-
-	function _whenOtherSet(other, criteria, values) {
-		// build a callback fn
-		var setCallback = _.partial(this.set, values);
-
-		// create a normal when condition
-		_whenOtherDo.call(this, criteria, setCallback, this);
-	}
-
-
-	exports.whenOther = function whenOther(other, criteria, action) {
-
-		// straight callback function
-		if (_.isFunction(action)) {
-			_whenOtherDo.apply(this, arguments);
-
-		} else if (_.isObject(action)) {
-			_whenOtherSet.apply(this, arguments);
-		}
+		return mswtch;
 	};
 });
 
@@ -255,19 +262,76 @@ define('__improved-model/when/index',['require','exports','module','lodash','./b
 
 /* jshint ignore:end */
 
-define('improved-model',['require','exports','module','lowercase-backbone','./__improved-model/when/index'],function (require, exports, module) {
+define('improved-model',['require','exports','module','lowercase-backbone','lodash','./__improved-model/swtch'],function (require, exports, module) {
 	
 
 
-	var backbone = require('lowercase-backbone');
+	var backbone = require('lowercase-backbone'),
+		_        = require('lodash');
 
+	// direct reference to the backbone.model initialization logic
+	var _initializeModel = backbone.model.prototype.initialize;
+
+
+	// options that should be set directly to the object.
+	var improvedModelOptions = ['cases', 'executionType'];
 
 	var model = module.exports = backbone.model.extend({
 
+		/**
+		 * Overrride default model initialization.
+		 *
+		 * @param  {[type]} attributes [description]
+		 * @param  {[type]} options    [description]
+		 * @return {[type]}            [description]
+		 */
+		initialize: function initializeImprovedModel(attributes, options) {
 
+			// initialize the backbone model
+			_initializeModel.apply(this, arguments);
+
+
+
+
+			// get options
+			options = options || {};
+			_.each(improvedModelOptions, function (opt) {
+
+				this[opt] = options[opt] || this[opt];
+
+			}, this);
+
+			// create the main swtch
+			this.mainSwtch = this.swtch(this.cases);
+		},
+
+		/**
+		 * Determines which execution should be done (all|first)
+		 *
+		 * @type {String}
+		 */
+		executionType: 'all',
+		cases: {},
+
+
+		when: function whenThis(criteria, callback, context) {
+			this.mainSwtch.when(criteria, callback, context);
+
+			return this;
+		},
+
+		whenOther: function whenOther(other, criteria, callback, context) {
+
+			// create a swtch
+			var mswtch = this.swtchOther(other);
+
+			mswtch.when(criteria, callback, context);
+
+			return this;
+		}
 
 	});
 
-	model.assignProto(require('./__improved-model/when/index'));
+	model.assignProto(require('./__improved-model/swtch'));
 });
 

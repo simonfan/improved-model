@@ -5,7 +5,8 @@ if (typeof define !== 'function') { var define = require('amdefine')(module) }
 define(function (require, exports) {
 	'use strict';
 
-	var modelSwtch = require('./model-swtch');
+		// the modelSwtch constructor.
+	var modelSwtch = require('./model-swtch/index');
 
 	/**
 	 * Create a model swtch related to this model.
@@ -17,7 +18,6 @@ define(function (require, exports) {
 
 		// instantiate the modelSwtch
 		var mswtch = modelSwtch(cases, { model: this });
-
 
 		// get execution method, based on executionType option
 		var _exec = this.executionType === 'all' ? mswtch.exec : mswtch.execFirst;

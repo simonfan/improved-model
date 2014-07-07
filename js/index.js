@@ -16,9 +16,8 @@ define(function (require, exports, module) {
 	'use strict';
 
 
-	var backbone = require('lowercase-backbone');
-
-	var modelSwtch = require('./__improved-model/model-swtch');
+	var backbone = require('lowercase-backbone'),
+		_        = require('lodash');
 
 	// direct reference to the backbone.model initialization logic
 	var _initializeModel = backbone.model.prototype.initialize;
@@ -83,7 +82,5 @@ define(function (require, exports, module) {
 
 	});
 
-	model
-		.assignProto(require('./__improved-model/condition'))
-		.assignProto(require('./__improved-model/swtch'));
+	model.assignProto(require('./__improved-model/swtch'));
 });
