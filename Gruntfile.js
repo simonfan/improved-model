@@ -118,7 +118,7 @@ module.exports = function (grunt) {
 
 					// exclude these modules AND their dependencies
 					// (excluding your bower dependencies)
-					exclude: ["lowercase-backbone"],
+					exclude: ["lowercase-backbone", 'object-query', 'swtch'],
 
 					// excludeShallow
 					excludeShallow: [],
@@ -149,7 +149,7 @@ module.exports = function (grunt) {
 
 					// exclude these modules AND their dependencies
 					// (excluding your bower dependencies)
-					exclude: ["lowercase-backbone"],
+					exclude: ["lowercase-backbone", 'object-query', 'swtch'],
 
 					// excludeShallow
 					excludeShallow: [],
