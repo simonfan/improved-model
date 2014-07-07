@@ -59,7 +59,7 @@
     "classitems": [
         {
             "file": "js/__improved-model/model-swtch/build-callback.js",
-            "line": 14,
+            "line": 15,
             "description": "Builds the callback function according to the type of the action.",
             "params": [
                 {
@@ -137,28 +137,6 @@
             "class": ""
         },
         {
-            "file": "js/__improved-model/swtch.js",
-            "line": 37,
-            "description": "Sets a swtch onto another model.",
-            "params": [
-                {
-                    "name": "other",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "cases",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
-            "class": ""
-        },
-        {
             "file": "js/index.js",
             "line": 31,
             "description": "Overrride default model initialization.",
@@ -193,7 +171,7 @@
     "warnings": [
         {
             "message": "Missing item type\nBuilds the callback function according to the type of the action.",
-            "line": " js/__improved-model/model-swtch/build-callback.js:14"
+            "line": " js/__improved-model/model-swtch/build-callback.js:15"
         },
         {
             "message": "Missing item type\nIf criteria is a string, parses it.\nOtherwise, simply return the criteria object.",
@@ -210,10 +188,6 @@
         {
             "message": "Missing item type\nCreate a model swtch related to this model.",
             "line": " js/__improved-model/swtch.js:11"
-        },
-        {
-            "message": "Missing item type\nSets a swtch onto another model.",
-            "line": " js/__improved-model/swtch.js:37"
         },
         {
             "message": "Missing item type\nOverrride default model initialization.",

@@ -8,6 +8,7 @@ define(function (require, exports, module) {
 	var _ = require('lodash');
 
 	function setCallback(model, values) {
+
 		model.set(values);
 	}
 
@@ -24,6 +25,7 @@ define(function (require, exports, module) {
 			// simple callback
 			return _.partial(action, model);
 		} else {
+
 			// setting callback
 			return _.partial(setCallback, model, action);
 		}

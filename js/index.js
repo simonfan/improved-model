@@ -64,22 +64,11 @@ define(function (require, exports, module) {
 		cases: {},
 
 
-		when: function whenThis(criteria, callback, context) {
-			this.mainSwtch.when(criteria, callback, context);
-
-			return this;
-		},
-
-		whenOther: function whenOther(other, criteria, callback, context) {
-
-			// create a swtch
-			var mswtch = this.swtchOther(other);
-
-			mswtch.when(criteria, callback, context);
+		when: function whenThis(criteria, action, context) {
+			this.mainSwtch.when(criteria, action, context);
 
 			return this;
 		}
-
 	});
 
 	model.assignProto(require('./__improved-model/swtch'));

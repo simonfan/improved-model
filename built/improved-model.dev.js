@@ -2,261 +2,7 @@
 //     (c) simonfan
 //     swtch is licensed under the MIT terms.
 
-/**
- * AMD and CJS module.
- *
- * @module swtch
- */
-
-/* jshint ignore:start */
-
-/* jshint ignore:end */
-
-define('__swtch/evaluate',['require','exports','module','lodash'],function (require, exports, module) {
-
-
-	var _ = require('lodash');
-
-	/**
-	 * Finds the default case.
-	 *
-	 * @return {[type]} [description]
-	 */
-	function findDefault() {
-
-		return _.find(this.cases, function (c_se) {
-			return c_se.condition === 'default';
-		});
-	}
-
-
-	/**
-	 * Find the first case that matches the query.
-	 *
-	 * @param  {[type]} query [description]
-	 * @return {[type]}       [description]
-	 */
-	exports.first = function first(query) {
-		var matchedCase = _.find(this.cases, function (c_se) {
-			return this.match(c_se.condition, query);
-		}, this);
-
-
-		// if no match is found,
-		// return the default case
-		matchedCase = matchedCase || findDefault.call(this);
-
-		// if no default case was defined, simply return null.
-
-		return matchedCase;
-	};
-
-	/**
-	 * Find all cases that match a given query.
-	 *
-	 * @param  {[type]} query [description]
-	 * @return {[type]}       [description]
-	 */
-	exports.all = function all(query) {
-
-		var matchedCases = _.filter(this.cases, function (c_se) {
-			return this.match(c_se.condition, query);
-		}, this);
-
-		// if matchedCases array is empty, add the default to it
-		// if a default case was defined.
-		if (matchedCases.length === 0) {
-
-			var df = findDefault.call(this);
-
-			if (df) {
-				matchedCases.push(df);
-			}
-		}
-
-		return matchedCases;
-	};
-});
-
-//     swtch
-//     (c) simonfan
-//     swtch is licensed under the MIT terms.
-
-/**
- * AMD and CJS module.
- *
- * @module swtch
- */
-
-/* jshint ignore:start */
-
-/* jshint ignore:end */
-
-define('__swtch/exec',['require','exports','module','lodash'],function (require, exports, module) {
-
-
-	var _ = require('lodash');
-
-	/**
-	 * Executes the first c_se found.
-	 * Remember: the cases are stored in an array
-	 * by order of addition. Thus, cases added first will have
-	 * priority over those added later.
-	 *
-	 * @param  {[type]} query [description]
-	 * @return {[type]}       [description]
-	 */
-	exports.execFirst = function execFirst(query) {
-
-		var matchedCase = this.first(query);
-
-		if (matchedCase) {
-			return this.execCase(matchedCase, query);
-		}
-	};
-
-	/**
-	 * Executes all cases that match the value, in the order they were added.
-	 *
-	 * @param  {[type]} query [description]
-	 * @return {[type]}       [description]
-	 */
-	exports.exec = function exec(query) {
-		var matchedCases = this.all(query);
-
-		return _.map(matchedCases, function (c, index) {
-			return this.execCase(c, query);
-		}, this);
-	};
-
-	/**
-	 * Invokes the case's value when exec is invoked.
-	 * Takes the case itself as first argument and
-	 * the value with which 'exec' was invoked with as second.
-	 *
-	 * @param  {[type]} c_se  [description]
-	 * @param  {[type]} value [description]
-	 * @return {[type]}       [description]
-	 */
-	exports.execCase = function execCase(c_se, query) {
-		return c_se.value.call(c_se.context);
-	};
-});
-
-//     swtch
-//     (c) simonfan
-//     swtch is licensed under the MIT terms.
-
-/**
- * AMD and CJS module.
- *
- * @module swtch
- */
-
-/* jshint ignore:start */
-
-/* jshint ignore:end */
-
-define('swtch',['require','exports','module','lodash','subject','./__swtch/evaluate','./__swtch/exec'],function (require, exports, module) {
-
-
-	var _       = require('lodash'),
-		subject = require('subject');
-
-	var swtch = module.exports = subject({
-
-		/**
-		 * Basically creates the c_se array and
-		 * adds cases if passed an array of cases
-		 * at start.
-		 *
-		 * @param  {[type]} cases [description]
-		 * @return {[type]}            [description]
-		 */
-		initialize: function initializeSwtch(cases) {
-
-
-			this.cases = [];
-
-			_.each(cases, function (c) {
-
-				this.when(c.condition, c.value);
-
-			}, this);
-		},
-
-		/**
-		 * Checks if a case is valid query the
-		 * @param  {[type]} c_se    [description]
-		 * @param  {[type]} query [description]
-		 * @return {[type]}         [description]
-		 */
-		match: function match(condition, query) {
-
-			if (_.isRegExp(condition)) {
-
-				return condition.test(query);
-
-			} else if (_.isFunction(condition)) {
-
-				return condition(query);
-
-			} else {
-				// (_.isString(condition) || _.isNumber(condition) || _.isBoolean(condition))
-
-				return condition === query;
-			}
-		},
-
-		/**
-		 * Defines a case.
-		 *
-		 * @return {[type]} [description]
-		 */
-		when: function when() {
-
-			// parse out arguments
-			var c_se;
-
-			if (arguments.length === 1 && _.isObject(arguments[0])) {
-				// arguments = [case]
-				c_se = arguments[0];
-			} else {
-				// arguments = [condition, value, context]
-				c_se = {
-					condition: arguments[0],
-					value    : arguments[1],
-					context  : arguments[2]
-				};
-			}
-
-			// push case to the cases array
-			this.cases.push(c_se);
-
-			return this;
-		},
-
-		/**
-		 * Defines the default value. To be used when no
-		 * other case is matched.
-		 *
-		 * @param  {[type]} value [description]
-		 * @return {[type]}       [description]
-		 */
-		d_fault: function d_fault(value, context) {
-
-			this.when('default', value, context);
-
-			return this;
-		},
-	});
-
-	swtch
-		.assignProto(require('./__swtch/evaluate'))
-		.assignProto(require('./__swtch/exec'));
-});
-
-
+define("__swtch/evaluate",["require","exports","module","lodash"],function(t,e){function n(){return i.find(this.cases,function(t){return"default"===t.condition})}var i=t("lodash");e.first=function(t){var e=i.find(this.cases,function(e){return this.match(e.condition,t)},this);return e=e||n.call(this)},e.all=function(t){var e=i.filter(this.cases,function(e){return this.match(e.condition,t)},this);if(0===e.length){var s=n.call(this);s&&e.push(s)}return e}}),define("__swtch/exec",["require","exports","module","lodash"],function(t,e){var n=t("lodash");e.execFirst=function(t){var e=this.first(t);return e?this.execCase(e,t):void 0},e.exec=function(t){var e=this.all(t);return n.map(e,function(e){return this.execCase(e,t)},this)},e.execCase=function(t){return t.value.call(t.context)}}),define("swtch",["require","exports","module","lodash","subject","./__swtch/evaluate","./__swtch/exec"],function(t,e,n){var i=t("lodash"),s=t("subject"),r=n.exports=s({initialize:function(t){this.cases=[],i.each(t,function(t){this.when(t.condition,t.value)},this)},match:function(t,e){return i.isRegExp(t)?t.test(e):i.isFunction(t)?t(e):t===e},when:function(){var t;return t=1===arguments.length&&i.isObject(arguments[0])?arguments[0]:{condition:arguments[0],value:arguments[1],context:arguments[2]},this.cases.push(t),this},d_fault:function(t,e){return this.when("default",t,e),this}});r.assignProto(t("./__swtch/evaluate")).assignProto(t("./__swtch/exec"))});
 //     Iterator
 //     (c) simonfan
 //     Iterator is licensed under the MIT terms.
@@ -367,6 +113,7 @@ define('__improved-model/model-swtch/build-callback',['require','exports','modul
 	var _ = require('lodash');
 
 	function setCallback(model, values) {
+
 		model.set(values);
 	}
 
@@ -383,6 +130,7 @@ define('__improved-model/model-swtch/build-callback',['require','exports','modul
 			// simple callback
 			return _.partial(action, model);
 		} else {
+
 			// setting callback
 			return _.partial(setCallback, model, action);
 		}
@@ -497,32 +245,6 @@ define('__improved-model/swtch',['require','exports','module','./model-swtch/ind
 
 		return mswtch;
 	};
-
-	/**
-	 * Sets a swtch onto another model.
-	 *
-	 * @param  {[type]} other [description]
-	 * @param  {[type]} cases [description]
-	 * @return {[type]}       [description]
-	 */
-	exports.swtchOther = function defineSwtchOther(other, cases) {
-
-		// instantiate the mswtch
-		var mswtch = modelSwtch(cases, { model: other });
-
-		// get execution method
-		var _exec = this.executionType === 'all' ? mswtch.exec : mswtch.execFirst;
-
-		// set event listeners.
-		this.listenTo(other, 'change', function (model) {
-			_exec.call(mswtch, model.attributes);
-		});
-
-		// exec once
-		_exec.call(mswtch, other.attributes);
-
-		return mswtch;
-	};
 });
 
 //     improved-model
@@ -591,22 +313,11 @@ define('improved-model',['require','exports','module','lowercase-backbone','loda
 		cases: {},
 
 
-		when: function whenThis(criteria, callback, context) {
-			this.mainSwtch.when(criteria, callback, context);
-
-			return this;
-		},
-
-		whenOther: function whenOther(other, criteria, callback, context) {
-
-			// create a swtch
-			var mswtch = this.swtchOther(other);
-
-			mswtch.when(criteria, callback, context);
+		when: function whenThis(criteria, action, context) {
+			this.mainSwtch.when(criteria, action, context);
 
 			return this;
 		}
-
 	});
 
 	model.assignProto(require('./__improved-model/swtch'));

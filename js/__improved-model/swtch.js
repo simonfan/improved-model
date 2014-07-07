@@ -33,30 +33,4 @@ define(function (require, exports) {
 
 		return mswtch;
 	};
-
-	/**
-	 * Sets a swtch onto another model.
-	 *
-	 * @param  {[type]} other [description]
-	 * @param  {[type]} cases [description]
-	 * @return {[type]}       [description]
-	 */
-	exports.swtchOther = function defineSwtchOther(other, cases) {
-
-		// instantiate the mswtch
-		var mswtch = modelSwtch(cases, { model: other });
-
-		// get execution method
-		var _exec = this.executionType === 'all' ? mswtch.exec : mswtch.execFirst;
-
-		// set event listeners.
-		this.listenTo(other, 'change', function (model) {
-			_exec.call(mswtch, model.attributes);
-		});
-
-		// exec once
-		_exec.call(mswtch, other.attributes);
-
-		return mswtch;
-	};
 });
