@@ -73,5 +73,5 @@ define(function (require, exports, module) {
 
 	model
 		.assignProto(require('./__improved-model/swtch'))
-		.assignProto(require('./__improved-model/bind-attribute'));
+		.assignProto(require('./__improved-model/virtual'));
 });

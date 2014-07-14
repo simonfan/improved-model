@@ -25,15 +25,15 @@
             "fors": {},
             "namespaces": {}
         },
-        "js/__improved-model/bind-attribute.js": {
-            "name": "js/__improved-model/bind-attribute.js",
+        "js/__improved-model/swtch.js": {
+            "name": "js/__improved-model/swtch.js",
             "modules": {},
             "classes": {},
             "fors": {},
             "namespaces": {}
         },
-        "js/__improved-model/swtch.js": {
-            "name": "js/__improved-model/swtch.js",
+        "js/__improved-model/virtual.js": {
+            "name": "js/__improved-model/virtual.js",
             "modules": {},
             "classes": {},
             "fors": {},
@@ -127,66 +127,66 @@
             "class": ""
         },
         {
-            "file": "js/__improved-model/bind-attribute.js",
-            "line": 13,
-            "description": "Bind a single attribute.",
-            "params": [
-                {
-                    "name": "src",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "dest",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "processor",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
-            "class": ""
-        },
-        {
-            "file": "js/__improved-model/bind-attribute.js",
-            "line": 33,
-            "description": "[exports description]",
-            "params": [
-                {
-                    "name": "src",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "dest",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "processor",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
-            "class": ""
-        },
-        {
             "file": "js/__improved-model/swtch.js",
             "line": 11,
             "description": "Create a model swtch related to this model.",
             "params": [
                 {
                     "name": "cases",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/virtual.js",
+            "line": 13,
+            "description": "Processes the source values and sets the result onto the dest attribuet.",
+            "params": [
+                {
+                    "name": "dest",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "src",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "processor",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/virtual.js",
+            "line": 32,
+            "description": "Binds an attribute to one or more sources.",
+            "params": [
+                {
+                    "name": "dest",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "src",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "processor",
                     "description": "[description]",
                     "type": "[type]"
                 }
@@ -247,16 +247,16 @@
             "line": " js/__improved-model/model-swtch/index.js:50"
         },
         {
-            "message": "Missing item type\nBind a single attribute.",
-            "line": " js/__improved-model/bind-attribute.js:13"
-        },
-        {
-            "message": "Missing item type\n[exports description]",
-            "line": " js/__improved-model/bind-attribute.js:33"
-        },
-        {
             "message": "Missing item type\nCreate a model swtch related to this model.",
             "line": " js/__improved-model/swtch.js:11"
+        },
+        {
+            "message": "Missing item type\nProcesses the source values and sets the result onto the dest attribuet.",
+            "line": " js/__improved-model/virtual.js:13"
+        },
+        {
+            "message": "Missing item type\nBinds an attribute to one or more sources.",
+            "line": " js/__improved-model/virtual.js:32"
         },
         {
             "message": "Missing item type\nOverrride default model initialization.",

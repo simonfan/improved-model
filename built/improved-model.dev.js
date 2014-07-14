@@ -226,7 +226,7 @@ define('__improved-model/swtch',['require','exports','module','./model-swtch/ind
 
 /* jshint ignore:end */
 
-define('__improved-model/bind-attribute',['require','exports','module','lodash'],function defBindAttribute(require, exports, module) {
+define('__improved-model/virtual',['require','exports','module','lodash'],function defBindAttribute(require, exports, module) {
 
 	var _ = require('lodash');
 
@@ -235,78 +235,53 @@ define('__improved-model/bind-attribute',['require','exports','module','lodash']
 
 
 	/**
-	 * Bind a single attribute.
-	 *
-	 * @param  {[type]} src       [description]
+	 * Processes the source values and sets the result onto the dest attribuet.
 	 * @param  {[type]} dest      [description]
+	 * @param  {[type]} src       [description]
 	 * @param  {[type]} processor [description]
 	 * @return {[type]}           [description]
 	 */
-	function bindAttributeToSingleDestination(src, dest, processor) {
+	function processSourceAndSetDest(dest, src, processor) {
+		// get the values from source
+		var values = _.map(src, this.get, this);
 
-		this.on('change:' + src, function () {
+		// invoke processor
+		var destValue = processor.apply(this, values);
 
-			this.set(dest, processor(this.get(src)));
-
-		}, this);
-
-		// initialize
-		this.set(dest, processor(this.get(src)));
+		// set
+		this.set(dest, destValue);
 	}
 
+
 	/**
-	 * [exports description]
-	 * @param  {[type]} src       [description]
+	 * Binds an attribute to one or more sources.
+	 *
+	 *
 	 * @param  {[type]} dest      [description]
+	 * @param  {[type]} src       [description]
 	 * @param  {[type]} processor [description]
 	 * @return {[type]}           [description]
 	 */
-	exports.bindAttribute = function bindAttribute(src, dest, processor) {
+	exports.virtual = function virtual(dest, src, processor) {
 
-		if (_.isArray(dest)) {
+		// processor defaults to echo
+		processor = processor || echo;
 
-			// processor default to echo (that does nothing :)
-			processor = processor || echo;
-			// if processor is string, try to get method.
-			processor = _.isString(processor) ? this[processor] : processor;
+		// source is always an array of attributes.
+		src = _.isArray(src) ? src : [src];
 
-			// bind the src to all the destinations required
-			// using the same processor.
-			_.each(dest, function (d) {
+		// create an event string
+		var events = _.map(src, function (src) {
+			return 'change:' + src;
+		}).join(' ');
 
-				bindAttributeToSingleDestination.call(this, src, d, processor);
+		// listen
+		this.on(events, _.partial(processSourceAndSetDest, dest, src, processor), this);
 
-			}, this);
 
-		} else if (_.isObject(dest)) {
-
-			// loop through destinations
-			// {
-			//     dest: function (sourceValue) {
-			//         dest.
-			//     }
-			// }
-			_.each(dest, function (processor, d) {
-
-				// get processor
-				processor = _.isString(processor) ? this[processor] : processor;
-
-				bindAttributeToSingleDestination.call(this, src, d, processor);
-
-			}, this);
-
-		} else {
-
-			// processor default to echo (that does nothing :)
-			processor = processor || echo;
-			// if processor is string, try to get method.
-			processor = _.isString(processor) ? this[processor] : processor;
-
-			bindAttributeToSingleDestination.call(this, src, dest, processor);
-
-		}
+		// initilize
+		processSourceAndSetDest.call(this, dest, src, processor);
 	};
-
 });
 
 //     improved-model
@@ -323,7 +298,7 @@ define('__improved-model/bind-attribute',['require','exports','module','lodash']
 
 /* jshint ignore:end */
 
-define('improved-model',['require','exports','module','lowercase-backbone','lodash','./__improved-model/swtch','./__improved-model/bind-attribute'],function (require, exports, module) {
+define('improved-model',['require','exports','module','lowercase-backbone','lodash','./__improved-model/swtch','./__improved-model/virtual'],function (require, exports, module) {
 	
 
 
@@ -384,6 +359,6 @@ define('improved-model',['require','exports','module','lowercase-backbone','loda
 
 	model
 		.assignProto(require('./__improved-model/swtch'))
-		.assignProto(require('./__improved-model/bind-attribute'));
+		.assignProto(require('./__improved-model/virtual'));
 });
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>js/__improved-model/bind-attribute.js - improved-model</title>
+    <title>js/__improved-model/virtual.js - improved-model</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -82,7 +82,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: js/__improved-model/bind-attribute.js</h1>
+                        <h1 class="file-heading">File: js/__improved-model/virtual.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -99,78 +99,53 @@ define(function defBindAttribute(require, exports, module) {
 
 
 	/**
-	 * Bind a single attribute.
-	 *
-	 * @param  {[type]} src       [description]
+	 * Processes the source values and sets the result onto the dest attribuet.
 	 * @param  {[type]} dest      [description]
+	 * @param  {[type]} src       [description]
 	 * @param  {[type]} processor [description]
 	 * @return {[type]}           [description]
 	 */
-	function bindAttributeToSingleDestination(src, dest, processor) {
+	function processSourceAndSetDest(dest, src, processor) {
+		// get the values from source
+		var values = _.map(src, this.get, this);
 
-		this.on(&#x27;change:&#x27; + src, function () {
+		// invoke processor
+		var destValue = processor.apply(this, values);
 
-			this.set(dest, processor(this.get(src)));
-
-		}, this);
-
-		// initialize
-		this.set(dest, processor(this.get(src)));
+		// set
+		this.set(dest, destValue);
 	}
 
+
 	/**
-	 * [exports description]
-	 * @param  {[type]} src       [description]
+	 * Binds an attribute to one or more sources.
+	 *
+	 *
 	 * @param  {[type]} dest      [description]
+	 * @param  {[type]} src       [description]
 	 * @param  {[type]} processor [description]
 	 * @return {[type]}           [description]
 	 */
-	exports.bindAttribute = function bindAttribute(src, dest, processor) {
+	exports.virtual = function virtual(dest, src, processor) {
 
-		if (_.isArray(dest)) {
+		// processor defaults to echo
+		processor = processor || echo;
 
-			// processor default to echo (that does nothing :)
-			processor = processor || echo;
-			// if processor is string, try to get method.
-			processor = _.isString(processor) ? this[processor] : processor;
+		// source is always an array of attributes.
+		src = _.isArray(src) ? src : [src];
 
-			// bind the src to all the destinations required
-			// using the same processor.
-			_.each(dest, function (d) {
+		// create an event string
+		var events = _.map(src, function (src) {
+			return &#x27;change:&#x27; + src;
+		}).join(&#x27; &#x27;);
 
-				bindAttributeToSingleDestination.call(this, src, d, processor);
+		// listen
+		this.on(events, _.partial(processSourceAndSetDest, dest, src, processor), this);
 
-			}, this);
 
-		} else if (_.isObject(dest)) {
-
-			// loop through destinations
-			// {
-			//     dest: function (sourceValue) {
-			//         dest.
-			//     }
-			// }
-			_.each(dest, function (processor, d) {
-
-				// get processor
-				processor = _.isString(processor) ? this[processor] : processor;
-
-				bindAttributeToSingleDestination.call(this, src, d, processor);
-
-			}, this);
-
-		} else {
-
-			// processor default to echo (that does nothing :)
-			processor = processor || echo;
-			// if processor is string, try to get method.
-			processor = _.isString(processor) ? this[processor] : processor;
-
-			bindAttributeToSingleDestination.call(this, src, dest, processor);
-
-		}
+		// initilize
+		processSourceAndSetDest.call(this, dest, src, processor);
 	};
-
 });
 
     </pre>

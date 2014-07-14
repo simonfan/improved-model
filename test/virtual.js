@@ -6,7 +6,7 @@
 		// browser
 		'improved-model',
 		// dependencies for the test
-		deps = [mod, 'should'];
+		deps = [mod, 'should', 'lodash'];
 
 	if (typeof define !== 'function') {
 		// node
@@ -16,20 +16,20 @@
 		define(deps, factory);
 	}
 
-})('test', function(model, should) {
+})('test', function(model, should, _) {
 	'use strict';
 
-	describe('improved-model bindAttribute', function () {
+	describe('improved-model virtual', function () {
 
 
-		it('is fine (:', function () {
+		it('single source', function () {
 
 			var fruitModel = model.extend({
 				initialize: function (attr, options) {
 
 					model.prototype.initialize.call(this, attr, options);
 
-					this.bindAttribute('name', 'uppercased-name', function (name) {
+					this.virtual('uppercased-name', 'name', function (name) {
 						return name.toUpperCase();
 					});
 
@@ -44,5 +44,27 @@
 			md.get('uppercased-name').should.eql('BANANA');
 
 		});
+
+		it('multiple sources', function () {
+
+
+			var md = model();
+
+			// set some bound attributes
+			md.virtual('fullName', ['name', 'middleName', 'lastName'], function () {
+				return _.toArray(arguments).join(' ');
+			});
+
+
+			md.set({
+				name: 'Alice',
+				middleName: 'Rocha',
+				lastName: 'Santos'
+			});
+
+			md.get('fullName').should.eql('Alice Rocha Santos');
+
+		});
+
 	});
 });
