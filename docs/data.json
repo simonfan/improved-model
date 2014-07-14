@@ -25,6 +25,13 @@
             "fors": {},
             "namespaces": {}
         },
+        "js/__improved-model/bind-attribute.js": {
+            "name": "js/__improved-model/bind-attribute.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "js/__improved-model/swtch.js": {
             "name": "js/__improved-model/swtch.js",
             "modules": {},
@@ -120,6 +127,60 @@
             "class": ""
         },
         {
+            "file": "js/__improved-model/bind-attribute.js",
+            "line": 13,
+            "description": "Bind a single attribute.",
+            "params": [
+                {
+                    "name": "src",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "dest",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "processor",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/bind-attribute.js",
+            "line": 33,
+            "description": "[exports description]",
+            "params": [
+                {
+                    "name": "src",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "dest",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "processor",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
             "file": "js/__improved-model/swtch.js",
             "line": 11,
             "description": "Create a model swtch related to this model.",
@@ -184,6 +245,14 @@
         {
             "message": "Missing item type\nOverride the when method in order to introduce a condition builder.",
             "line": " js/__improved-model/model-swtch/index.js:50"
+        },
+        {
+            "message": "Missing item type\nBind a single attribute.",
+            "line": " js/__improved-model/bind-attribute.js:13"
+        },
+        {
+            "message": "Missing item type\n[exports description]",
+            "line": " js/__improved-model/bind-attribute.js:33"
         },
         {
             "message": "Missing item type\nCreate a model swtch related to this model.",

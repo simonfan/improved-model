@@ -222,6 +222,93 @@ define('__improved-model/swtch',['require','exports','module','./model-swtch/ind
 	};
 });
 
+/* jshint ignore:start */
+
+/* jshint ignore:end */
+
+define('__improved-model/bind-attribute',['require','exports','module','lodash'],function defBindAttribute(require, exports, module) {
+
+	var _ = require('lodash');
+
+	// do nothing
+	function echo(v) { return v; }
+
+
+	/**
+	 * Bind a single attribute.
+	 *
+	 * @param  {[type]} src       [description]
+	 * @param  {[type]} dest      [description]
+	 * @param  {[type]} processor [description]
+	 * @return {[type]}           [description]
+	 */
+	function bindAttributeToSingleDestination(src, dest, processor) {
+
+		this.on('change:' + src, function () {
+
+			this.set(dest, processor(this.get(src)));
+
+		}, this);
+
+		// initialize
+		this.set(dest, processor(this.get(src)));
+	}
+
+	/**
+	 * [exports description]
+	 * @param  {[type]} src       [description]
+	 * @param  {[type]} dest      [description]
+	 * @param  {[type]} processor [description]
+	 * @return {[type]}           [description]
+	 */
+	exports.bindAttribute = function bindAttribute(src, dest, processor) {
+
+		if (_.isArray(dest)) {
+
+			// processor default to echo (that does nothing :)
+			processor = processor || echo;
+			// if processor is string, try to get method.
+			processor = _.isString(processor) ? this[processor] : processor;
+
+			// bind the src to all the destinations required
+			// using the same processor.
+			_.each(dest, function (d) {
+
+				bindAttributeToSingleDestination.call(this, src, d, processor);
+
+			}, this);
+
+		} else if (_.isObject(dest)) {
+
+			// loop through destinations
+			// {
+			//     dest: function (sourceValue) {
+			//         dest.
+			//     }
+			// }
+			_.each(dest, function (processor, d) {
+
+				// get processor
+				processor = _.isString(processor) ? this[processor] : processor;
+
+				bindAttributeToSingleDestination.call(this, src, d, processor);
+
+			}, this);
+
+		} else {
+
+			// processor default to echo (that does nothing :)
+			processor = processor || echo;
+			// if processor is string, try to get method.
+			processor = _.isString(processor) ? this[processor] : processor;
+
+			bindAttributeToSingleDestination.call(this, src, dest, processor);
+
+		}
+	};
+
+});
+
 //     improved-model
 //     (c) simonfan
 //     improved-model is licensed under the MIT terms.
@@ -236,7 +323,7 @@ define('__improved-model/swtch',['require','exports','module','./model-swtch/ind
 
 /* jshint ignore:end */
 
-define('improved-model',['require','exports','module','lowercase-backbone','lodash','./__improved-model/swtch'],function (require, exports, module) {
+define('improved-model',['require','exports','module','lowercase-backbone','lodash','./__improved-model/swtch','./__improved-model/bind-attribute'],function (require, exports, module) {
 	
 
 
@@ -295,6 +382,8 @@ define('improved-model',['require','exports','module','lowercase-backbone','loda
 		}
 	});
 
-	model.assignProto(require('./__improved-model/swtch'));
+	model
+		.assignProto(require('./__improved-model/swtch'))
+		.assignProto(require('./__improved-model/bind-attribute'));
 });
 

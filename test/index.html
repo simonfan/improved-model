@@ -19,7 +19,7 @@
 		        mocha.setup('bdd');
 
 				// now that amdconfig is loaded, the base url is /src
-			    require(["text!/test/fixture.html","/test/basics.js","/test/swtch.js","/test/when-do.js","/test/when-set.js"], function(fixtureHtml) {
+			    require(["text!/test/fixture.html","/test/basics.js","/test/bind-attribute.js","/test/swtch.js","/test/when-do.js","/test/when-set.js"], function(fixtureHtml) {
 
 			    	var fixture = document.createElement('div');
 			    	fixture.innerHTML = fixtureHtml;

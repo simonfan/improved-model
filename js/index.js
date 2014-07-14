@@ -71,5 +71,7 @@ define(function (require, exports, module) {
 		}
 	});
 
-	model.assignProto(require('./__improved-model/swtch'));
+	model
+		.assignProto(require('./__improved-model/swtch'))
+		.assignProto(require('./__improved-model/bind-attribute'));
 });

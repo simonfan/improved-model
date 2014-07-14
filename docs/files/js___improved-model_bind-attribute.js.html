@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>js/index.js - improved-model</title>
+    <title>js/__improved-model/bind-attribute.js - improved-model</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -82,86 +82,95 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: js/index.js</h1>
+                        <h1 class="file-heading">File: js/__improved-model/bind-attribute.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-//     improved-model
-//     (c) simonfan
-//     improved-model is licensed under the MIT terms.
-
-/**
- * AMD and CJS module.
- *
- * @module improved-model
- */
-
 /* jshint ignore:start */
 if (typeof define !== &#x27;function&#x27;) { var define = require(&#x27;amdefine&#x27;)(module) }
 /* jshint ignore:end */
 
-define(function (require, exports, module) {
-	&#x27;use strict&#x27;;
+define(function defBindAttribute(require, exports, module) {
+
+	var _ = require(&#x27;lodash&#x27;);
+
+	// do nothing
+	function echo(v) { return v; }
 
 
-	var backbone = require(&#x27;lowercase-backbone&#x27;),
-		_        = require(&#x27;lodash&#x27;);
+	/**
+	 * Bind a single attribute.
+	 *
+	 * @param  {[type]} src       [description]
+	 * @param  {[type]} dest      [description]
+	 * @param  {[type]} processor [description]
+	 * @return {[type]}           [description]
+	 */
+	function bindAttributeToSingleDestination(src, dest, processor) {
 
-	// direct reference to the backbone.model initialization logic
-	var _initializeModel = backbone.model.prototype.initialize;
+		this.on(&#x27;change:&#x27; + src, function () {
 
+			this.set(dest, processor(this.get(src)));
 
-	// options that should be set directly to the object.
-	var improvedModelOptions = [&#x27;cases&#x27;, &#x27;executionType&#x27;];
+		}, this);
 
-	var model = module.exports = backbone.model.extend({
+		// initialize
+		this.set(dest, processor(this.get(src)));
+	}
 
-		/**
-		 * Overrride default model initialization.
-		 *
-		 * @param  {[type]} attributes [description]
-		 * @param  {[type]} options    [description]
-		 * @return {[type]}            [description]
-		 */
-		initialize: function initializeImprovedModel(attributes, options) {
+	/**
+	 * [exports description]
+	 * @param  {[type]} src       [description]
+	 * @param  {[type]} dest      [description]
+	 * @param  {[type]} processor [description]
+	 * @return {[type]}           [description]
+	 */
+	exports.bindAttribute = function bindAttribute(src, dest, processor) {
 
-			// initialize the backbone model
-			_initializeModel.apply(this, arguments);
+		if (_.isArray(dest)) {
 
+			// processor default to echo (that does nothing :)
+			processor = processor || echo;
+			// if processor is string, try to get method.
+			processor = _.isString(processor) ? this[processor] : processor;
 
+			// bind the src to all the destinations required
+			// using the same processor.
+			_.each(dest, function (d) {
 
-
-			// get options
-			options = options || {};
-			_.each(improvedModelOptions, function (opt) {
-
-				this[opt] = options[opt] || this[opt];
+				bindAttributeToSingleDestination.call(this, src, d, processor);
 
 			}, this);
 
-			// create the main swtch
-			this.mainSwtch = this.swtch(this.cases);
-		},
+		} else if (_.isObject(dest)) {
 
-		/**
-		 * Determines which execution should be done (all|first)
-		 *
-		 * @type {String}
-		 */
-		executionType: &#x27;all&#x27;,
-		cases: {},
+			// loop through destinations
+			// {
+			//     dest: function (sourceValue) {
+			//         dest.
+			//     }
+			// }
+			_.each(dest, function (processor, d) {
 
+				// get processor
+				processor = _.isString(processor) ? this[processor] : processor;
 
-		when: function whenThis(criteria, action, context) {
-			this.mainSwtch.when(criteria, action, context);
+				bindAttributeToSingleDestination.call(this, src, d, processor);
 
-			return this;
+			}, this);
+
+		} else {
+
+			// processor default to echo (that does nothing :)
+			processor = processor || echo;
+			// if processor is string, try to get method.
+			processor = _.isString(processor) ? this[processor] : processor;
+
+			bindAttributeToSingleDestination.call(this, src, dest, processor);
+
 		}
-	});
+	};
 
-	model
-		.assignProto(require(&#x27;./__improved-model/swtch&#x27;))
-		.assignProto(require(&#x27;./__improved-model/bind-attribute&#x27;));
 });
 
     </pre>
