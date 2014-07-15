@@ -84,12 +84,36 @@ define(function (require, exports, module) {
 		.assignProto(require('./__improved-model/virtual'));
 
 	// define static methods
-	model.assignStatic('extendVirtualAttributes', function extendVirtualAttributes(virtuals) {
+	model.assignStatic({
 
-		var extended = this.extend();
+		/**
+		 * Extends the currnet model and then sets the virtual attributes
+		 * property on the prototype of the extended model constructor.
+		 *
+		 * @param  {[type]} virtuals [description]
+		 * @return {[type]}          [description]
+		 */
+		extendVirtualAttributes: function extendVirtualAttributes(virtuals) {
 
-		extended.assignProto('virtualAttributes', virtuals);
+			var extended = this.extend();
 
-		return extended;
+			extended.defineVirtualAttributes(virtuals);
+
+			return extended;
+		},
+
+		/**
+		 * Sets the virtualAttributes property on the prototype.
+		 *
+		 * @param  {[type]} virtuals [description]
+		 * @return {[type]}          [description]
+		 */
+		defineVirtualAttributes: function defineVirtualAttributes(virtuals) {
+
+			// set virtualAttributes property on the prototype.
+			this.prototype.virtualAttributes = virtuals;
+
+			return this;
+		}
 	});
 });

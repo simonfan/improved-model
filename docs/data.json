@@ -235,6 +235,42 @@
             "type": "{String}",
             "class": "",
             "module": "improved-model"
+        },
+        {
+            "file": "js/index.js",
+            "line": 89,
+            "description": "Extends the currnet model and then sets the virtual attributes\nproperty on the prototype of the extended model constructor.",
+            "params": [
+                {
+                    "name": "virtuals",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": "",
+            "module": "improved-model"
+        },
+        {
+            "file": "js/index.js",
+            "line": 105,
+            "description": "Sets the virtualAttributes property on the prototype.",
+            "params": [
+                {
+                    "name": "virtuals",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": "",
+            "module": "improved-model"
         }
     ],
     "warnings": [
@@ -277,6 +313,14 @@
         {
             "message": "Missing item type\nDetermines which execution should be done (all|first)",
             "line": " js/index.js:66"
+        },
+        {
+            "message": "Missing item type\nExtends the currnet model and then sets the virtual attributes\nproperty on the prototype of the extended model constructor.",
+            "line": " js/index.js:89"
+        },
+        {
+            "message": "Missing item type\nSets the virtualAttributes property on the prototype.",
+            "line": " js/index.js:105"
         }
     ]
 }
