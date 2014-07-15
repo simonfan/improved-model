@@ -25,6 +25,13 @@
             "fors": {},
             "namespaces": {}
         },
+        "js/__improved-model/pipe.js": {
+            "name": "js/__improved-model/pipe.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "js/__improved-model/swtch.js": {
             "name": "js/__improved-model/swtch.js",
             "modules": {},
@@ -127,8 +134,112 @@
             "class": ""
         },
         {
+            "file": "js/__improved-model/pipe.js",
+            "line": 10,
+            "description": "modelPipe",
+            "params": [
+                {
+                    "name": "model",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "attribute)",
+                    "description": "{\t\t\treturn   model.get(attribute);\t\t} [description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "set:",
+                    "description": "function      setToModel(model,         attribute,    value) {\t\t\treturn model.set(attribute, value);\t\t}\t} [description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/pipe.js",
+            "line": 20,
+            "description": "Gets data from the model.",
+            "params": [
+                {
+                    "name": "model",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "attribute",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/pipe.js",
+            "line": 31,
+            "description": "Sets the model on the attribute.",
+            "params": [
+                {
+                    "name": "model",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "attribute",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "value",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/pipe.js",
+            "line": 62,
+            "description": "Pump data to destination.",
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/pipe.js",
+            "line": 76,
+            "description": "Defines a pipe object.",
+            "params": [
+                {
+                    "name": "map",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "options",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
             "file": "js/__improved-model/swtch.js",
-            "line": 11,
+            "line": 18,
             "description": "Create a model swtch related to this model.",
             "params": [
                 {
@@ -172,7 +283,17 @@
         },
         {
             "file": "js/__improved-model/virtual.js",
-            "line": 54,
+            "line": 56,
+            "description": "[initializeIMVirtual description]",
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/virtual.js",
+            "line": 66,
             "description": "Binds an attribute to one or more sources.",
             "params": [
                 {
@@ -238,7 +359,7 @@
         },
         {
             "file": "js/index.js",
-            "line": 89,
+            "line": 90,
             "description": "Extends the currnet model and then sets the virtual attributes\nproperty on the prototype of the extended model constructor.",
             "params": [
                 {
@@ -256,7 +377,7 @@
         },
         {
             "file": "js/index.js",
-            "line": 105,
+            "line": 106,
             "description": "Sets the virtualAttributes property on the prototype.",
             "params": [
                 {
@@ -291,16 +412,40 @@
             "line": " js/__improved-model/model-swtch/index.js:50"
         },
         {
+            "message": "Missing item type\nmodelPipe",
+            "line": " js/__improved-model/pipe.js:10"
+        },
+        {
+            "message": "Missing item type\nGets data from the model.",
+            "line": " js/__improved-model/pipe.js:20"
+        },
+        {
+            "message": "Missing item type\nSets the model on the attribute.",
+            "line": " js/__improved-model/pipe.js:31"
+        },
+        {
+            "message": "Missing item type\nPump data to destination.",
+            "line": " js/__improved-model/pipe.js:62"
+        },
+        {
+            "message": "Missing item type\nDefines a pipe object.",
+            "line": " js/__improved-model/pipe.js:76"
+        },
+        {
             "message": "Missing item type\nCreate a model swtch related to this model.",
-            "line": " js/__improved-model/swtch.js:11"
+            "line": " js/__improved-model/swtch.js:18"
         },
         {
             "message": "Missing item type\nProcesses the source values and sets the result onto the dest attribuet.",
             "line": " js/__improved-model/virtual.js:13"
         },
         {
+            "message": "Missing item type\n[initializeIMVirtual description]",
+            "line": " js/__improved-model/virtual.js:56"
+        },
+        {
             "message": "Missing item type\nBinds an attribute to one or more sources.",
-            "line": " js/__improved-model/virtual.js:54"
+            "line": " js/__improved-model/virtual.js:66"
         },
         {
             "message": "Missing item type\nOverrride default model initialization.",
@@ -316,11 +461,11 @@
         },
         {
             "message": "Missing item type\nExtends the currnet model and then sets the virtual attributes\nproperty on the prototype of the extended model constructor.",
-            "line": " js/index.js:89"
+            "line": " js/index.js:90"
         },
         {
             "message": "Missing item type\nSets the virtualAttributes property on the prototype.",
-            "line": " js/index.js:105"
+            "line": " js/index.js:106"
         }
     ]
 }

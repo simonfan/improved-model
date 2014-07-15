@@ -19,7 +19,9 @@ require.config({
 		deep: '../bower_components/deep/built/deep',
 		itr: '../bower_components/itr/built/itr',
 		'object-query': '../bower_components/object-query/built/object-query',
-		swtch: '../bower_components/swtch/built/swtch'
+		swtch: '../bower_components/swtch/built/swtch',
+		pipe: '../bower_components/pipe/built/pipe',
+		pump: '../bower_components/pump/built/pump'
 	},
 	shim: {
 		backbone: {

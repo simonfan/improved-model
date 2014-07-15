@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>js/__improved-model/swtch.js - improved-model</title>
+    <title>js/__improved-model/pipe.js - improved-model</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -82,7 +82,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: js/__improved-model/swtch.js</h1>
+                        <h1 class="file-heading">File: js/__improved-model/pipe.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -90,44 +90,108 @@
 if (typeof define !== &#x27;function&#x27;) { var define = require(&#x27;amdefine&#x27;)(module) }
 /* jshint ignore:end */
 
-define(function (require, exports) {
-	&#x27;use strict&#x27;;
+define(function defModelPump(require, exports, module) {
 
-		// the modelSwtch constructor.
-	var modelSwtch = require(&#x27;./model-swtch/index&#x27;);
-
-
-	exports.initializeIMSwtch = function initializeIMSwtch() {
-		// create the main swtch
-		this.mainSwtch = this.swtch(this.cases);
-	};
-
+	var pipe = require(&#x27;pipe&#x27;),
+		_    = require(&#x27;lodash&#x27;);
 
 	/**
-	 * Create a model swtch related to this model.
+	 * modelPipe
 	 *
-	 * @param  {[type]} cases [description]
-	 * @return {[type]}       [description]
+	 * @param  {[type]} model      [description]
+	 * @param  {[type]} attribute) {			return   model.get(attribute);		} [description]
+	 * @param  {[type]} set:       function      setToModel(model,         attribute,    value) {			return model.set(attribute, value);		}	} [description]
+	 * @return {[type]}            [description]
 	 */
-	exports.swtch = function defineSwtch(cases) {
+	var modelPipe = pipe.extend({
 
-		// instantiate the modelSwtch
-		var mswtch = modelSwtch(cases, { model: this });
+		/**
+		 * Gets data from the model.
+		 *
+		 * @param  {[type]} model     [description]
+		 * @param  {[type]} attribute [description]
+		 * @return {[type]}           [description]
+		 */
+		get: function getFromModel(model, attribute) {
+			return model.get(attribute);
+		},
 
-		// get execution method, based on executionType option
-		var _exec = this.executionType === &#x27;all&#x27; ? mswtch.exec : mswtch.execFirst;
+		/**
+		 * Sets the model on the attribute.
+		 *
+		 * @param {[type]} model     [description]
+		 * @param {[type]} attribute [description]
+		 * @param {[type]} value     [description]
+		 */
+		set: function setToModel(model, attribute, value) {
+			return model.set(attribute, value);
+		}
+	});
 
-		// set event listeners for execution
-		this.on(&#x27;change&#x27;, function (model) {
-			// invoke the exec.
-			_exec.call(mswtch, model.attributes);
+
+
+	// methods
+
+	exports.initializeIMPipe = function initializePipe() {
+
+		// bind methods
+		_.bindAll(this, [&#x27;pump&#x27;]);
+
+		// create array of pipes
+		this.pipes = [];
+
+
+		// listen to changes on model.
+		// whenever changes occur on this model, pump data
+
+		this.on(&#x27;change&#x27;, this.pump);
+	};
+
+	/**
+	 * Pump data to destination.
+	 *
+	 * @return {[type]} [description]
+	 */
+	exports.pump = function pumpData() {
+		_.each(this.pipes, function (pipe) {
+			pipe.pump();
+
 		});
 
-		// exec once
-		_exec.call(mswtch, this.attributes);
-
-		return mswtch;
+		return this;
 	};
+
+	/**
+	 * Defines a pipe object.
+	 *
+	 * @param  {[type]} map     [description]
+	 * @param  {[type]} options [description]
+	 * @return {[type]}         [description]
+	 */
+	exports.pipe = function defineModelPipe(map, options) {
+
+		// parse out the map
+		if (_.isString(map)) {
+			var attribute = map;
+
+			map = {};
+			map[attribute] = attribute;
+		}
+
+		options = options || {};
+		options.source = this;
+
+		// create a pipe on the model pump
+		var pipe = modelPipe(map, options);
+
+		// add pipe to the pipes array
+		this.pipes.push(pipe);
+
+
+		// return the pipe
+		return pipe;
+	};
+
 });
 
     </pre>

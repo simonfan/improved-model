@@ -48,12 +48,12 @@ define(function (require, exports, module) {
 
 			}, this);
 
-			// create the main swtch
-			this.mainSwtch = this.swtch(this.cases);
+			// INITIALIZATION.
+			this.initializeIMSwtch();
 
+			this.initializeIMVirtual();
 
-			// initialize virtuals
-			this.virtual(this.virtualAttributes);
+			this.initializeIMPipe();
 		},
 
 		/**
@@ -81,7 +81,8 @@ define(function (require, exports, module) {
 
 	model
 		.assignProto(require('./__improved-model/swtch'))
-		.assignProto(require('./__improved-model/virtual'));
+		.assignProto(require('./__improved-model/virtual'))
+		.assignProto(require('./__improved-model/pipe'));
 
 	// define static methods
 	model.assignStatic({

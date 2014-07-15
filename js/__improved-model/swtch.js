@@ -8,6 +8,13 @@ define(function (require, exports) {
 		// the modelSwtch constructor.
 	var modelSwtch = require('./model-swtch/index');
 
+
+	exports.initializeIMSwtch = function initializeIMSwtch() {
+		// create the main swtch
+		this.mainSwtch = this.swtch(this.cases);
+	};
+
+
 	/**
 	 * Create a model swtch related to this model.
 	 *

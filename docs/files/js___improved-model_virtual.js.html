@@ -139,6 +139,18 @@ define(function defBindAttribute(require, exports, module) {
 	}
 
 
+
+
+	/**
+	 * [initializeIMVirtual description]
+	 * @return {[type]} [description]
+	 */
+	exports.initializeIMVirtual = function initializeIMVirtual() {
+		// initialize virtuals
+		this.virtual(this.virtualAttributes);
+	};
+
+
 	/**
 	 * Binds an attribute to one or more sources.
 	 *

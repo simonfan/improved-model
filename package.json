@@ -1,7 +1,7 @@
 {
   "name": "improved-model",
   "main": "./js",
-  "version": "0.2.4",
+  "version": "0.3.4",
   "description": "Improved BackboneJS model.",
   "repository": {
     "type": "git",
@@ -12,6 +12,7 @@
     "lodash": "^2.4.1",
     "lowercase-backbone": "^0.2.7",
     "object-query": "^0.1.4",
+    "pipe": "git://github.com/simonfan/pipe.git",
     "swtch": "^0.2.2"
   },
   "devDependencies": {
