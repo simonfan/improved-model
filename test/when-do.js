@@ -33,7 +33,7 @@
 			// set when condition
 			md.when({
 				name: 'John',
-				lastName: 'Smith'
+				lastName: 'Smith',
 			}, function () {
 				control = true;
 			});

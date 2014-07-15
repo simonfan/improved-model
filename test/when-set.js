@@ -24,7 +24,7 @@
 
 			var md = model();
 
-			md.when('size:large', {
+			md.when({ size: 'large' }, {
 				width: 1000,
 				height: 600,
 			})

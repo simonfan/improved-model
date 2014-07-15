@@ -172,7 +172,7 @@
         },
         {
             "file": "js/__improved-model/virtual.js",
-            "line": 32,
+            "line": 54,
             "description": "Binds an attribute to one or more sources.",
             "params": [
                 {
@@ -222,7 +222,15 @@
         },
         {
             "file": "js/index.js",
-            "line": 58,
+            "line": 59,
+            "description": "Hash holding the virtual attribute definitions.",
+            "type": "{Object}",
+            "class": "",
+            "module": "improved-model"
+        },
+        {
+            "file": "js/index.js",
+            "line": 66,
             "description": "Determines which execution should be done (all|first)",
             "type": "{String}",
             "class": "",
@@ -256,15 +264,19 @@
         },
         {
             "message": "Missing item type\nBinds an attribute to one or more sources.",
-            "line": " js/__improved-model/virtual.js:32"
+            "line": " js/__improved-model/virtual.js:54"
         },
         {
             "message": "Missing item type\nOverrride default model initialization.",
             "line": " js/index.js:31"
         },
         {
+            "message": "Missing item type\nHash holding the virtual attribute definitions.",
+            "line": " js/index.js:59"
+        },
+        {
             "message": "Missing item type\nDetermines which execution should be done (all|first)",
-            "line": " js/index.js:58"
+            "line": " js/index.js:66"
         }
     ]
 }

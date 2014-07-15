@@ -51,7 +51,7 @@
 			var md = model();
 
 			// set some bound attributes
-			md.virtual('fullName', ['name', 'middleName', 'lastName'], function () {
+			md.virtual('fullName', ['name', 'middleName', 'lastName'], function (name, middleName, lastName, model) {
 				return _.toArray(arguments).join(' ');
 			});
 
@@ -63,6 +63,28 @@
 			});
 
 			md.get('fullName').should.eql('Alice Rocha Santos');
+
+		});
+
+
+		it('define virtual properties on extension', function () {
+
+			var person = model.extendVirtualAttributes({
+				fullName: {
+					src: ['name', 'middleName', 'lastName'],
+					processor: function processFullName() {
+						return _(arguments).toArray().compact().join(' ');
+					},
+				},
+			});
+
+			var alice = person({
+				name: 'Alice'
+			});
+
+			alice.get('fullName').should.eql('Alice');
+
+
 
 		});
 

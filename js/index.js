@@ -40,9 +40,6 @@ define(function (require, exports, module) {
 			// initialize the backbone model
 			_initializeModel.apply(this, arguments);
 
-
-
-
 			// get options
 			options = options || {};
 			_.each(improvedModelOptions, function (opt) {
@@ -53,7 +50,18 @@ define(function (require, exports, module) {
 
 			// create the main swtch
 			this.mainSwtch = this.swtch(this.cases);
+
+
+			// initialize virtuals
+			this.virtual(this.virtualAttributes);
 		},
+
+		/**
+		 * Hash holding the virtual attribute definitions.
+		 *
+		 * @type {Object}
+		 */
+		virtualAttributes: {},
 
 		/**
 		 * Determines which execution should be done (all|first)
@@ -74,4 +82,14 @@ define(function (require, exports, module) {
 	model
 		.assignProto(require('./__improved-model/swtch'))
 		.assignProto(require('./__improved-model/virtual'));
+
+	// define static methods
+	model.assignStatic('extendVirtualAttributes', function extendVirtualAttributes(virtuals) {
+
+		var extended = this.extend();
+
+		extended.assignProto('virtualAttributes', virtuals);
+
+		return extended;
+	});
 });

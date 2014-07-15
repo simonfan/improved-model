@@ -17,28 +17,19 @@ define(function defBindAttribute(require, exports, module) {
 	 * @param  {[type]} processor [description]
 	 * @return {[type]}           [description]
 	 */
-	function processSourceAndSetDest(dest, src, processor) {
+	function processSourceAndSetDest(model, dest, src, processor) {
 		// get the values from source
-		var values = _.map(src, this.get, this);
+		var values = _.map(src, model.get, model);
 
 		// invoke processor
-		var destValue = processor.apply(this, values);
+		var destValue = processor.apply(model, values);
 
 		// set
-		this.set(dest, destValue);
+		model.set(dest, destValue);
 	}
 
 
-	/**
-	 * Binds an attribute to one or more sources.
-	 *
-	 *
-	 * @param  {[type]} dest      [description]
-	 * @param  {[type]} src       [description]
-	 * @param  {[type]} processor [description]
-	 * @return {[type]}           [description]
-	 */
-	exports.virtual = function virtual(dest, src, processor) {
+	function defineVirtualProperty(model, dest, src, processor) {
 
 		// processor defaults to echo
 		processor = processor || echo;
@@ -52,10 +43,54 @@ define(function defBindAttribute(require, exports, module) {
 		}).join(' ');
 
 		// listen
-		this.on(events, _.partial(processSourceAndSetDest, dest, src, processor), this);
+		model.on(events, _.partial(processSourceAndSetDest, model, dest, src, processor));
 
 
 		// initilize
-		processSourceAndSetDest.call(this, dest, src, processor);
+		processSourceAndSetDest(model, dest, src, processor);
+	}
+
+
+	/**
+	 * Binds an attribute to one or more sources.
+	 *
+	 *
+	 * @param  {[type]} dest      [description]
+	 * @param  {[type]} src       [description]
+	 * @param  {[type]} processor [description]
+	 * @return {[type]}           [description]
+	 */
+	exports.virtual = function virtual() {
+
+		// parse out arguments.
+		if (_.isObject(arguments[0])) {
+			// hash of virtual arguments
+			// {
+			//     destAttribute: {
+			//         src: 'srcAttribute',
+			//         processor: function(srcAttribute) {
+			//             return 'final value ' + srcAttribute
+			//         }
+			//     }
+			// }
+			_.each(arguments[0], function (definition, dest) {
+
+				// define the virtual dest
+				defineVirtualProperty(this, dest, definition.src, definition.processor);
+
+			}, this);
+
+		} else if (_.isString(arguments[0])) {
+			// arguments: [destAttribute, srcAttribute, processor]
+
+			var args = _.toArray(arguments);
+			args.unshift(this);
+
+			// define the single virtual
+			defineVirtualProperty.apply(null, args);
+		}
+
+		// return this
+		return this;
 	};
 });
