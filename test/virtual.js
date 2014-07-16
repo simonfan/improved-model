@@ -29,7 +29,7 @@
 
 					model.prototype.initialize.call(this, attr, options);
 
-					this.virtual('uppercased-name', 'name', function (name) {
+					this.defineVirtualAttribute('uppercased-name', 'name', function (name) {
 						return name.toUpperCase();
 					});
 
@@ -83,7 +83,18 @@
 			});
 
 			alice.get('fullName').should.eql('Alice');
+		});
 
+
+		it('defining processor on the model', function () {
+
+			var person = model.extend({
+				fullName: function (name, middleName, lastName) {
+					return _(arguments).toArray().compact().join(' ');
+				}
+			});
+
+			person.defineVirtualAttribute('fullName', ['name', 'middleName', 'lastName']);
 
 
 		});

@@ -25,6 +25,20 @@
             "fors": {},
             "namespaces": {}
         },
+        "js/__improved-model/virtual/prototype.js": {
+            "name": "js/__improved-model/virtual/prototype.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/__improved-model/virtual/static.js": {
+            "name": "js/__improved-model/virtual/static.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "js/__improved-model/pipe.js": {
             "name": "js/__improved-model/pipe.js",
             "modules": {},
@@ -34,13 +48,6 @@
         },
         "js/__improved-model/swtch.js": {
             "name": "js/__improved-model/swtch.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
-        },
-        "js/__improved-model/virtual.js": {
-            "name": "js/__improved-model/virtual.js",
             "modules": {},
             "classes": {},
             "fors": {},
@@ -131,6 +138,118 @@
             "file": "js/__improved-model/model-swtch/index.js",
             "line": 50,
             "description": "Override the when method in order to introduce a condition builder.",
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/virtual/prototype.js",
+            "line": 13,
+            "description": "Processes the source values and sets the result onto the dest attribuet.",
+            "params": [
+                {
+                    "name": "dest",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "src",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "processor",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/virtual/prototype.js",
+            "line": 59,
+            "description": "Hash holding the virtual attribute definitions.",
+            "type": "{Object}",
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/virtual/prototype.js",
+            "line": 66,
+            "description": "[initializeIMVirtual description]",
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/virtual/prototype.js",
+            "line": 76,
+            "description": "Binds an attribute to one or more sources.",
+            "params": [
+                {
+                    "name": "dest",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "src",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "processor",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/virtual/prototype.js",
+            "line": 129,
+            "description": "Alias :)",
+            "type": "{[type]}",
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/virtual/static.js",
+            "line": 10,
+            "description": "Sets the virtualAttributes property on the prototype.",
+            "params": [
+                {
+                    "name": "virtuals",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/virtual/static.js",
+            "line": 38,
+            "description": "Extends the currnet model and then sets the virtual attributes\nproperty on the prototype of the extended model constructor.",
+            "params": [
+                {
+                    "name": "virtuals",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
             "class": ""
         },
         {
@@ -255,70 +374,6 @@
             "class": ""
         },
         {
-            "file": "js/__improved-model/virtual.js",
-            "line": 13,
-            "description": "Processes the source values and sets the result onto the dest attribuet.",
-            "params": [
-                {
-                    "name": "dest",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "src",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "processor",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
-            "class": ""
-        },
-        {
-            "file": "js/__improved-model/virtual.js",
-            "line": 56,
-            "description": "[initializeIMVirtual description]",
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
-            "class": ""
-        },
-        {
-            "file": "js/__improved-model/virtual.js",
-            "line": 66,
-            "description": "Binds an attribute to one or more sources.",
-            "params": [
-                {
-                    "name": "dest",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "src",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "processor",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
-            "class": ""
-        },
-        {
             "file": "js/index.js",
             "line": 31,
             "description": "Overrride default model initialization.",
@@ -344,52 +399,8 @@
         {
             "file": "js/index.js",
             "line": 59,
-            "description": "Hash holding the virtual attribute definitions.",
-            "type": "{Object}",
-            "class": "",
-            "module": "improved-model"
-        },
-        {
-            "file": "js/index.js",
-            "line": 66,
             "description": "Determines which execution should be done (all|first)",
             "type": "{String}",
-            "class": "",
-            "module": "improved-model"
-        },
-        {
-            "file": "js/index.js",
-            "line": 90,
-            "description": "Extends the currnet model and then sets the virtual attributes\nproperty on the prototype of the extended model constructor.",
-            "params": [
-                {
-                    "name": "virtuals",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
-            "class": "",
-            "module": "improved-model"
-        },
-        {
-            "file": "js/index.js",
-            "line": 106,
-            "description": "Sets the virtualAttributes property on the prototype.",
-            "params": [
-                {
-                    "name": "virtuals",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
             "class": "",
             "module": "improved-model"
         }
@@ -410,6 +421,34 @@
         {
             "message": "Missing item type\nOverride the when method in order to introduce a condition builder.",
             "line": " js/__improved-model/model-swtch/index.js:50"
+        },
+        {
+            "message": "Missing item type\nProcesses the source values and sets the result onto the dest attribuet.",
+            "line": " js/__improved-model/virtual/prototype.js:13"
+        },
+        {
+            "message": "Missing item type\nHash holding the virtual attribute definitions.",
+            "line": " js/__improved-model/virtual/prototype.js:59"
+        },
+        {
+            "message": "Missing item type\n[initializeIMVirtual description]",
+            "line": " js/__improved-model/virtual/prototype.js:66"
+        },
+        {
+            "message": "Missing item type\nBinds an attribute to one or more sources.",
+            "line": " js/__improved-model/virtual/prototype.js:76"
+        },
+        {
+            "message": "Missing item type\nAlias :)",
+            "line": " js/__improved-model/virtual/prototype.js:129"
+        },
+        {
+            "message": "Missing item type\nSets the virtualAttributes property on the prototype.",
+            "line": " js/__improved-model/virtual/static.js:10"
+        },
+        {
+            "message": "Missing item type\nExtends the currnet model and then sets the virtual attributes\nproperty on the prototype of the extended model constructor.",
+            "line": " js/__improved-model/virtual/static.js:38"
         },
         {
             "message": "Missing item type\nmodelPipe",
@@ -436,36 +475,12 @@
             "line": " js/__improved-model/swtch.js:18"
         },
         {
-            "message": "Missing item type\nProcesses the source values and sets the result onto the dest attribuet.",
-            "line": " js/__improved-model/virtual.js:13"
-        },
-        {
-            "message": "Missing item type\n[initializeIMVirtual description]",
-            "line": " js/__improved-model/virtual.js:56"
-        },
-        {
-            "message": "Missing item type\nBinds an attribute to one or more sources.",
-            "line": " js/__improved-model/virtual.js:66"
-        },
-        {
             "message": "Missing item type\nOverrride default model initialization.",
             "line": " js/index.js:31"
         },
         {
-            "message": "Missing item type\nHash holding the virtual attribute definitions.",
-            "line": " js/index.js:59"
-        },
-        {
             "message": "Missing item type\nDetermines which execution should be done (all|first)",
-            "line": " js/index.js:66"
-        },
-        {
-            "message": "Missing item type\nExtends the currnet model and then sets the virtual attributes\nproperty on the prototype of the extended model constructor.",
-            "line": " js/index.js:90"
-        },
-        {
-            "message": "Missing item type\nSets the virtualAttributes property on the prototype.",
-            "line": " js/index.js:106"
+            "line": " js/index.js:59"
         }
     ]
 }

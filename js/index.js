@@ -57,13 +57,6 @@ define(function (require, exports, module) {
 		},
 
 		/**
-		 * Hash holding the virtual attribute definitions.
-		 *
-		 * @type {Object}
-		 */
-		virtualAttributes: {},
-
-		/**
 		 * Determines which execution should be done (all|first)
 		 *
 		 * @type {String}
@@ -81,40 +74,9 @@ define(function (require, exports, module) {
 
 	model
 		.assignProto(require('./__improved-model/swtch'))
-		.assignProto(require('./__improved-model/virtual'))
+		.assignProto(require('./__improved-model/virtual/prototype'))
 		.assignProto(require('./__improved-model/pipe'));
 
 	// define static methods
-	model.assignStatic({
-
-		/**
-		 * Extends the currnet model and then sets the virtual attributes
-		 * property on the prototype of the extended model constructor.
-		 *
-		 * @param  {[type]} virtuals [description]
-		 * @return {[type]}          [description]
-		 */
-		extendVirtualAttributes: function extendVirtualAttributes(virtuals) {
-
-			var extended = this.extend();
-
-			extended.defineVirtualAttributes(virtuals);
-
-			return extended;
-		},
-
-		/**
-		 * Sets the virtualAttributes property on the prototype.
-		 *
-		 * @param  {[type]} virtuals [description]
-		 * @return {[type]}          [description]
-		 */
-		defineVirtualAttributes: function defineVirtualAttributes(virtuals) {
-
-			// set virtualAttributes property on the prototype.
-			this.prototype.virtualAttributes = virtuals;
-
-			return this;
-		}
-	});
+	model.assignStatic(require('./__improved-model/virtual/static'));
 });

@@ -233,12 +233,12 @@ define('__improved-model/swtch',['require','exports','module','./model-swtch/ind
 
 /* jshint ignore:end */
 
-define('__improved-model/virtual',['require','exports','module','lodash'],function defBindAttribute(require, exports, module) {
+define('__improved-model/virtual/prototype',['require','exports','module','lodash'],function defBindAttribute(require, exports, module) {
 
 	var _ = require('lodash');
 
 	// do nothing
-	function echo(v) { return v; }
+	function _echo(v) { return v; }
 
 
 	/**
@@ -248,7 +248,7 @@ define('__improved-model/virtual',['require','exports','module','lodash'],functi
 	 * @param  {[type]} processor [description]
 	 * @return {[type]}           [description]
 	 */
-	function processSourceAndSetDest(model, dest, src, processor) {
+	function _processSourceAndSetDest(model, dest, src, processor) {
 		// get the values from source
 		var values = _.map(src, model.get, model);
 
@@ -260,10 +260,12 @@ define('__improved-model/virtual',['require','exports','module','lodash'],functi
 	}
 
 
-	function defineVirtualProperty(model, dest, src, processor) {
+	function _defineVirtualAttribute(model, dest, src, processor) {
 
-		// processor defaults to echo
-		processor = processor || echo;
+		// processor defaults to:
+		// 1) method on the model
+		// 2) echo
+		processor = processor || model[src] || _echo;
 
 		// source is always an array of attributes.
 		src = _.isArray(src) ? src : [src];
@@ -274,15 +276,23 @@ define('__improved-model/virtual',['require','exports','module','lodash'],functi
 		}).join(' ');
 
 		// listen
-		model.on(events, _.partial(processSourceAndSetDest, model, dest, src, processor));
+		model.on(events, _.partial(_processSourceAndSetDest, model, dest, src, processor));
 
 
 		// initilize
-		processSourceAndSetDest(model, dest, src, processor);
+		_processSourceAndSetDest(model, dest, src, processor);
 	}
 
 
 
+
+
+	/**
+	 * Hash holding the virtual attribute definitions.
+	 *
+	 * @type {Object}
+	 */
+	exports._virtualAttributes = {};
 
 	/**
 	 * [initializeIMVirtual description]
@@ -290,7 +300,7 @@ define('__improved-model/virtual',['require','exports','module','lodash'],functi
 	 */
 	exports.initializeIMVirtual = function initializeIMVirtual() {
 		// initialize virtuals
-		this.virtual(this.virtualAttributes);
+		this.virtual(this._virtualAttributes);
 	};
 
 
@@ -303,7 +313,7 @@ define('__improved-model/virtual',['require','exports','module','lodash'],functi
 	 * @param  {[type]} processor [description]
 	 * @return {[type]}           [description]
 	 */
-	exports.virtual = function virtual() {
+	exports.defineVirtualAttribute = function defineVirtualAttribute() {
 
 		// parse out arguments.
 		if (_.isObject(arguments[0])) {
@@ -317,9 +327,19 @@ define('__improved-model/virtual',['require','exports','module','lodash'],functi
 			//     }
 			// }
 			_.each(arguments[0], function (definition, dest) {
+				var src, processor;
+
+				if (_.isObject(definition)) {
+					src      = definition.src;
+					processor = definition.processor;
+				} else {
+					src = definition;
+				}
+
+
 
 				// define the virtual dest
-				defineVirtualProperty(this, dest, definition.src, definition.processor);
+				_defineVirtualAttribute(this, dest, src, processor);
 
 			}, this);
 
@@ -330,12 +350,19 @@ define('__improved-model/virtual',['require','exports','module','lodash'],functi
 			args.unshift(this);
 
 			// define the single virtual
-			defineVirtualProperty.apply(null, args);
+			_defineVirtualAttribute.apply(null, args);
 		}
 
 		// return this
 		return this;
 	};
+
+	/**
+	 * Alias :)
+	 *
+	 * @type {[type]}
+	 */
+	exports.virtual = exports.defineVirtualAttribute;
 });
 
 //     pipe
@@ -451,6 +478,60 @@ define('__improved-model/pipe',['require','exports','module','pipe','lodash'],fu
 
 });
 
+/* jshint ignore:start */
+
+/* jshint ignore:end */
+
+define('__improved-model/virtual/static',['require','exports','module','lodash'],function defBindAttribute(require, exports, module) {
+
+	var _ = require('lodash');
+
+
+	/**
+	 * Sets the virtualAttributes property on the prototype.
+	 *
+	 * @param  {[type]} virtuals [description]
+	 * @return {[type]}          [description]
+	 */
+	exports.defineVirtualAttribute = function defineVirtualAttribute() {
+
+
+		if (_.isObject(arguments[0])) {
+			// hash of virtual attibute definition
+			// arguments: [
+			// 		{ dest: { src: [src], processor: function () {} }}
+			// ]
+			_.assign(this.prototype._virtualAttributes, arguments[0]);
+
+		} else {
+			// single virtual attribute definition
+			// arguments: [dest, src, processor]
+			this.prototype._virtualAttributes[arguments[0]] = {
+				src: arguments[1],
+				processor: arguments[2]
+			};
+		}
+
+		return this;
+	};
+
+	/**
+	 * Extends the currnet model and then sets the virtual attributes
+	 * property on the prototype of the extended model constructor.
+	 *
+	 * @param  {[type]} virtuals [description]
+	 * @return {[type]}          [description]
+	 */
+	exports.extendVirtualAttributes = function extendVirtualAttributes(virtuals) {
+
+		var extended = this.extend();
+
+		extended.defineVirtualAttribute(virtuals);
+
+		return extended;
+	};
+});
+
 //     improved-model
 //     (c) simonfan
 //     improved-model is licensed under the MIT terms.
@@ -465,7 +546,7 @@ define('__improved-model/pipe',['require','exports','module','pipe','lodash'],fu
 
 /* jshint ignore:end */
 
-define('improved-model',['require','exports','module','lowercase-backbone','lodash','./__improved-model/swtch','./__improved-model/virtual','./__improved-model/pipe'],function (require, exports, module) {
+define('improved-model',['require','exports','module','lowercase-backbone','lodash','./__improved-model/swtch','./__improved-model/virtual/prototype','./__improved-model/pipe','./__improved-model/virtual/static'],function (require, exports, module) {
 	
 
 
@@ -510,13 +591,6 @@ define('improved-model',['require','exports','module','lowercase-backbone','loda
 		},
 
 		/**
-		 * Hash holding the virtual attribute definitions.
-		 *
-		 * @type {Object}
-		 */
-		virtualAttributes: {},
-
-		/**
 		 * Determines which execution should be done (all|first)
 		 *
 		 * @type {String}
@@ -534,41 +608,10 @@ define('improved-model',['require','exports','module','lowercase-backbone','loda
 
 	model
 		.assignProto(require('./__improved-model/swtch'))
-		.assignProto(require('./__improved-model/virtual'))
+		.assignProto(require('./__improved-model/virtual/prototype'))
 		.assignProto(require('./__improved-model/pipe'));
 
 	// define static methods
-	model.assignStatic({
-
-		/**
-		 * Extends the currnet model and then sets the virtual attributes
-		 * property on the prototype of the extended model constructor.
-		 *
-		 * @param  {[type]} virtuals [description]
-		 * @return {[type]}          [description]
-		 */
-		extendVirtualAttributes: function extendVirtualAttributes(virtuals) {
-
-			var extended = this.extend();
-
-			extended.defineVirtualAttributes(virtuals);
-
-			return extended;
-		},
-
-		/**
-		 * Sets the virtualAttributes property on the prototype.
-		 *
-		 * @param  {[type]} virtuals [description]
-		 * @return {[type]}          [description]
-		 */
-		defineVirtualAttributes: function defineVirtualAttributes(virtuals) {
-
-			// set virtualAttributes property on the prototype.
-			this.prototype.virtualAttributes = virtuals;
-
-			return this;
-		}
-	});
+	model.assignStatic(require('./__improved-model/virtual/static'));
 });
 

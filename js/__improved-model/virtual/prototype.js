@@ -7,7 +7,7 @@ define(function defBindAttribute(require, exports, module) {
 	var _ = require('lodash');
 
 	// do nothing
-	function echo(v) { return v; }
+	function _echo(v) { return v; }
 
 
 	/**
@@ -17,7 +17,7 @@ define(function defBindAttribute(require, exports, module) {
 	 * @param  {[type]} processor [description]
 	 * @return {[type]}           [description]
 	 */
-	function processSourceAndSetDest(model, dest, src, processor) {
+	function _processSourceAndSetDest(model, dest, src, processor) {
 		// get the values from source
 		var values = _.map(src, model.get, model);
 
@@ -29,10 +29,12 @@ define(function defBindAttribute(require, exports, module) {
 	}
 
 
-	function defineVirtualProperty(model, dest, src, processor) {
+	function _defineVirtualAttribute(model, dest, src, processor) {
 
-		// processor defaults to echo
-		processor = processor || echo;
+		// processor defaults to:
+		// 1) method on the model
+		// 2) echo
+		processor = processor || model[src] || _echo;
 
 		// source is always an array of attributes.
 		src = _.isArray(src) ? src : [src];
@@ -43,15 +45,23 @@ define(function defBindAttribute(require, exports, module) {
 		}).join(' ');
 
 		// listen
-		model.on(events, _.partial(processSourceAndSetDest, model, dest, src, processor));
+		model.on(events, _.partial(_processSourceAndSetDest, model, dest, src, processor));
 
 
 		// initilize
-		processSourceAndSetDest(model, dest, src, processor);
+		_processSourceAndSetDest(model, dest, src, processor);
 	}
 
 
 
+
+
+	/**
+	 * Hash holding the virtual attribute definitions.
+	 *
+	 * @type {Object}
+	 */
+	exports._virtualAttributes = {};
 
 	/**
 	 * [initializeIMVirtual description]
@@ -59,7 +69,7 @@ define(function defBindAttribute(require, exports, module) {
 	 */
 	exports.initializeIMVirtual = function initializeIMVirtual() {
 		// initialize virtuals
-		this.virtual(this.virtualAttributes);
+		this.virtual(this._virtualAttributes);
 	};
 
 
@@ -72,7 +82,7 @@ define(function defBindAttribute(require, exports, module) {
 	 * @param  {[type]} processor [description]
 	 * @return {[type]}           [description]
 	 */
-	exports.virtual = function virtual() {
+	exports.defineVirtualAttribute = function defineVirtualAttribute() {
 
 		// parse out arguments.
 		if (_.isObject(arguments[0])) {
@@ -86,9 +96,19 @@ define(function defBindAttribute(require, exports, module) {
 			//     }
 			// }
 			_.each(arguments[0], function (definition, dest) {
+				var src, processor;
+
+				if (_.isObject(definition)) {
+					src      = definition.src;
+					processor = definition.processor;
+				} else {
+					src = definition;
+				}
+
+
 
 				// define the virtual dest
-				defineVirtualProperty(this, dest, definition.src, definition.processor);
+				_defineVirtualAttribute(this, dest, src, processor);
 
 			}, this);
 
@@ -99,10 +119,17 @@ define(function defBindAttribute(require, exports, module) {
 			args.unshift(this);
 
 			// define the single virtual
-			defineVirtualProperty.apply(null, args);
+			_defineVirtualAttribute.apply(null, args);
 		}
 
 		// return this
 		return this;
 	};
+
+	/**
+	 * Alias :)
+	 *
+	 * @type {[type]}
+	 */
+	exports.virtual = exports.defineVirtualAttribute;
 });
