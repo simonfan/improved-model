@@ -97,6 +97,13 @@
 			person.defineVirtualAttribute('fullName', ['name', 'middleName', 'lastName']);
 
 
+			var alice = person({
+				name: 'Alice',
+				lastName: 'Medeiros'
+			});
+
+			// check full name
+			alice.get('fullName').should.eql('Alice Medeiros');
 		});
 
 	});

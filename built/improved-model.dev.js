@@ -265,7 +265,7 @@ define('__improved-model/virtual/prototype',['require','exports','module','lodas
 		// processor defaults to:
 		// 1) method on the model
 		// 2) echo
-		processor = processor || model[src] || _echo;
+		processor = processor || model[dest] || _echo;
 
 		// source is always an array of attributes.
 		src = _.isArray(src) ? src : [src];
