@@ -136,13 +136,13 @@
         },
         {
             "file": "js/__improved-model/model-swtch/index.js",
-            "line": 50,
+            "line": 51,
             "description": "Override the when method in order to introduce a condition builder.",
             "class": ""
         },
         {
             "file": "js/__improved-model/virtual/prototype.js",
-            "line": 13,
+            "line": 14,
             "description": "Processes the source values and sets the result onto the dest attribuet.",
             "params": [
                 {
@@ -169,14 +169,14 @@
         },
         {
             "file": "js/__improved-model/virtual/prototype.js",
-            "line": 59,
+            "line": 60,
             "description": "Hash holding the virtual attribute definitions.",
             "type": "{Object}",
             "class": ""
         },
         {
             "file": "js/__improved-model/virtual/prototype.js",
-            "line": 66,
+            "line": 67,
             "description": "[initializeIMVirtual description]",
             "return": {
                 "description": "[description]",
@@ -186,7 +186,7 @@
         },
         {
             "file": "js/__improved-model/virtual/prototype.js",
-            "line": 76,
+            "line": 77,
             "description": "Binds an attribute to one or more sources.",
             "params": [
                 {
@@ -213,14 +213,14 @@
         },
         {
             "file": "js/__improved-model/virtual/prototype.js",
-            "line": 129,
+            "line": 130,
             "description": "Alias :)",
             "type": "{[type]}",
             "class": ""
         },
         {
             "file": "js/__improved-model/virtual/static.js",
-            "line": 10,
+            "line": 11,
             "description": "Sets the virtualAttributes property on the prototype.",
             "params": [
                 {
@@ -237,7 +237,7 @@
         },
         {
             "file": "js/__improved-model/virtual/static.js",
-            "line": 38,
+            "line": 39,
             "description": "Extends the currnet model and then sets the virtual attributes\nproperty on the prototype of the extended model constructor.",
             "params": [
                 {
@@ -254,7 +254,7 @@
         },
         {
             "file": "js/__improved-model/pipe.js",
-            "line": 10,
+            "line": 11,
             "description": "modelPipe",
             "params": [
                 {
@@ -281,7 +281,7 @@
         },
         {
             "file": "js/__improved-model/pipe.js",
-            "line": 20,
+            "line": 21,
             "description": "Gets data from the model.",
             "params": [
                 {
@@ -303,7 +303,7 @@
         },
         {
             "file": "js/__improved-model/pipe.js",
-            "line": 31,
+            "line": 32,
             "description": "Sets the model on the attribute.",
             "params": [
                 {
@@ -326,7 +326,7 @@
         },
         {
             "file": "js/__improved-model/pipe.js",
-            "line": 62,
+            "line": 63,
             "description": "Pump data to destination.",
             "return": {
                 "description": "[description]",
@@ -336,7 +336,7 @@
         },
         {
             "file": "js/__improved-model/pipe.js",
-            "line": 76,
+            "line": 77,
             "description": "Defines a pipe object.",
             "params": [
                 {
@@ -420,55 +420,55 @@
         },
         {
             "message": "Missing item type\nOverride the when method in order to introduce a condition builder.",
-            "line": " js/__improved-model/model-swtch/index.js:50"
+            "line": " js/__improved-model/model-swtch/index.js:51"
         },
         {
             "message": "Missing item type\nProcesses the source values and sets the result onto the dest attribuet.",
-            "line": " js/__improved-model/virtual/prototype.js:13"
+            "line": " js/__improved-model/virtual/prototype.js:14"
         },
         {
             "message": "Missing item type\nHash holding the virtual attribute definitions.",
-            "line": " js/__improved-model/virtual/prototype.js:59"
+            "line": " js/__improved-model/virtual/prototype.js:60"
         },
         {
             "message": "Missing item type\n[initializeIMVirtual description]",
-            "line": " js/__improved-model/virtual/prototype.js:66"
+            "line": " js/__improved-model/virtual/prototype.js:67"
         },
         {
             "message": "Missing item type\nBinds an attribute to one or more sources.",
-            "line": " js/__improved-model/virtual/prototype.js:76"
+            "line": " js/__improved-model/virtual/prototype.js:77"
         },
         {
             "message": "Missing item type\nAlias :)",
-            "line": " js/__improved-model/virtual/prototype.js:129"
+            "line": " js/__improved-model/virtual/prototype.js:130"
         },
         {
             "message": "Missing item type\nSets the virtualAttributes property on the prototype.",
-            "line": " js/__improved-model/virtual/static.js:10"
+            "line": " js/__improved-model/virtual/static.js:11"
         },
         {
             "message": "Missing item type\nExtends the currnet model and then sets the virtual attributes\nproperty on the prototype of the extended model constructor.",
-            "line": " js/__improved-model/virtual/static.js:38"
+            "line": " js/__improved-model/virtual/static.js:39"
         },
         {
             "message": "Missing item type\nmodelPipe",
-            "line": " js/__improved-model/pipe.js:10"
+            "line": " js/__improved-model/pipe.js:11"
         },
         {
             "message": "Missing item type\nGets data from the model.",
-            "line": " js/__improved-model/pipe.js:20"
+            "line": " js/__improved-model/pipe.js:21"
         },
         {
             "message": "Missing item type\nSets the model on the attribute.",
-            "line": " js/__improved-model/pipe.js:31"
+            "line": " js/__improved-model/pipe.js:32"
         },
         {
             "message": "Missing item type\nPump data to destination.",
-            "line": " js/__improved-model/pipe.js:62"
+            "line": " js/__improved-model/pipe.js:63"
         },
         {
             "message": "Missing item type\nDefines a pipe object.",
-            "line": " js/__improved-model/pipe.js:76"
+            "line": " js/__improved-model/pipe.js:77"
         },
         {
             "message": "Missing item type\nCreate a model swtch related to this model.",

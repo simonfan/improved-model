@@ -3,6 +3,7 @@ if (typeof define !== 'function') { var define = require('amdefine')(module) }
 /* jshint ignore:end */
 
 define(function defImprovedModelSwtch(require, exports, module) {
+	'use strict';
 
 	var swtch = require('swtch'),
 		_     = require('lodash');

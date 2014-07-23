@@ -29,10 +29,10 @@
 			var dest = backbone.model();
 
 			// pipe data
-			src.pipe({
+			src.pipe(dest, {
 				srcAttr : 'destAttr',
 				srcAttr1: 'destAttr1'
-			}).to(dest);
+			});
 
 			// set attr on the md;
 			src.set('srcAttr', 'some crazy value');

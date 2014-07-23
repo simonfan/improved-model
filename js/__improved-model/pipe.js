@@ -3,6 +3,7 @@ if (typeof define !== 'function') { var define = require('amdefine')(module) }
 /* jshint ignore:end */
 
 define(function defModelPump(require, exports, module) {
+	'use strict';
 
 	var pipe = require('pipe'),
 		_    = require('lodash');
@@ -80,7 +81,7 @@ define(function defModelPump(require, exports, module) {
 	 * @param  {[type]} options [description]
 	 * @return {[type]}         [description]
 	 */
-	exports.pipe = function defineModelPipe(map, options) {
+	exports.pipe = function defineModelPipe(dest, map, options) {
 
 		// parse out the map
 		if (_.isString(map)) {
@@ -90,11 +91,8 @@ define(function defModelPump(require, exports, module) {
 			map[attribute] = attribute;
 		}
 
-		options = options || {};
-		options.source = this;
-
 		// create a pipe on the model pump
-		var pipe = modelPipe(map, options);
+		var pipe = modelPipe(this, dest, map, options);
 
 		// add pipe to the pipes array
 		this.pipes.push(pipe);

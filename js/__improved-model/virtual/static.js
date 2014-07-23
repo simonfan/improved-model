@@ -3,6 +3,7 @@ if (typeof define !== 'function') { var define = require('amdefine')(module) }
 /* jshint ignore:end */
 
 define(function defBindAttribute(require, exports, module) {
+	'use strict';
 
 	var _ = require('lodash');
 
@@ -44,7 +45,10 @@ define(function defBindAttribute(require, exports, module) {
 	 */
 	exports.extendVirtualAttributes = function extendVirtualAttributes(virtuals) {
 
-		var extended = this.extend();
+
+		var inheritedVirtuals = _.create(this.prototype._virtualAttributes);
+
+		var extended = this.extend({ virtuals: inheritedVirtuals });
 
 		extended.defineVirtualAttribute(virtuals);
 

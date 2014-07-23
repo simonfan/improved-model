@@ -42,12 +42,12 @@ define(function (require, exports, module) {
 
 				var split = criteriaStr.split(colon);
 
+				var key   = split[0],
+					value = split[1].split(pipe);
+
 				if (!split[1]) {
 					throw new Error('No value found for ' + key + ' criterion.');
 				}
-
-				var key   = split[0],
-					value = split[1].split(pipe);
 
 				// if value is an array of a single item, unwrap it
 				criteria[key] = (value.length > 1) ? value : value[0];

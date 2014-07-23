@@ -42,12 +42,12 @@ define('__improved-model/model-swtch/build-condition',['require','exports','modu
 
 				var split = criteriaStr.split(colon);
 
+				var key   = split[0],
+					value = split[1].split(pipe);
+
 				if (!split[1]) {
 					throw new Error('No value found for ' + key + ' criterion.');
 				}
-
-				var key   = split[0],
-					value = split[1].split(pipe);
 
 				// if value is an array of a single item, unwrap it
 				criteria[key] = (value.length > 1) ? value : value[0];
@@ -117,6 +117,7 @@ define('__improved-model/model-swtch/build-callback',['require','exports','modul
 /* jshint ignore:end */
 
 define('__improved-model/model-swtch/index',['require','exports','module','swtch','lodash','./build-condition','./build-callback'],function defImprovedModelSwtch(require, exports, module) {
+	
 
 	var swtch = require('swtch'),
 		_     = require('lodash');
@@ -234,6 +235,7 @@ define('__improved-model/swtch',['require','exports','module','./model-swtch/ind
 /* jshint ignore:end */
 
 define('__improved-model/virtual/prototype',['require','exports','module','lodash'],function defBindAttribute(require, exports, module) {
+	
 
 	var _ = require('lodash');
 
@@ -369,12 +371,13 @@ define('__improved-model/virtual/prototype',['require','exports','module','lodas
 //     (c) simonfan
 //     pipe is licensed under the MIT terms.
 
-define("__pipe/streams/pump",["require","exports","module","lodash"],function(t,e,i){function s(t,e,i){n.each(i,function(i){return this._destSet(e,i,t)},this)}var n=t("lodash");i.exports=function(t,e,i){var n=this.destination,r=this._srcGet(this.source,t);(!this.isCached(t,r)||i)&&s.call(this,r,n,e)}}),define("__pipe/streams/drain",["require","exports","module","lodash"],function(t,e,i){t("lodash");i.exports=function(t,e,i){var s=this._destGet(this.destination,e[0]);return(!this.isCached(t,s)||i)&&this._srcSet(this.source,t,s),this}}),define("__pipe/streams/index",["require","exports","module","lodash","./pump","./drain"],function(t,e){function i(t,e,i){return e=e?s.pick(this._map,e):this._map,s.each(e,function(e,s){t.call(this,s,e,i)},this),this}var s=t("lodash");e.pump=s.partial(i,t("./pump")),e.drain=s.partial(i,t("./drain")),e.inject=function(t,e){if(!this.source)throw new Error("No source for pipe");s.each(t,function(t,i){(!this.isCached(i,t)||e)&&this._srcSet(this.source,i,t)},this),this.pump(null,!0)}}),define("__pipe/mapping",["require","exports","module","lodash"],function(t,e){var i=t("lodash");e.map=function(){var t,e;return i.isString(arguments[0])?(t=arguments[0],e=arguments[1]||t,e=i.isArray(e)?e:[e],this._map[t]=e):i.isObject(arguments[0])&&i.each(arguments[0],function(t,e){this.map(e,t)},this),this},e.removeLine=function(t){return delete this._map[t],this}}),define("pipe",["require","exports","module","subject","lodash","./__pipe/streams/index","./__pipe/mapping"],function(t,e,i){var s=t("subject"),n=t("lodash"),r=["srcGet","srcSet","destGet","destSet"],h=i.exports=s({initialize:function(t,e){e=e||{},n.each(r,function(t){this[t]=e[t]||this[t]},this),this._srcGet=this.srcGet||this.get,this._srcSet=this.srcSet||this.set,this._destGet=this.destGet||this.get,this._destSet=this.destSet||this.set,e.cache!==!1&&this.clearCache(),e.source&&this.from(e.source),e.destination&&this.to(e.destination),this._map={},this.map(t)},get:function(t,e){return t[e]},set:function(t,e,i){return t[e]=i,t},clearCache:function(){return this.cache={},this},isCached:function(t,e){return this.cache?this.cache[t]!==e?(this.cache[t]=e,!1):!0:!1},to:function(t){return this.clearCache(),this.destination=t,this},from:function(t){return this.clearCache(),this.source=t,this}});h.assignProto(t("./__pipe/streams/index")).assignProto(t("./__pipe/mapping"))});
+define("__pipe/pump",["require","exports","module","lodash"],function(t,i){var e=t("lodash");i.pump=function(t,i){var s=this.maps.to,r=this.src,h=this.dest;t=t?e.pick(s,t):s;var n=i&&i.force;e.each(t,function(t,i){var s=this.srcGet(r,i);e.each(t,function(t){(n||!this.cacheCheck(i,s))&&this.destSet(h,t,s)},this)},this)}}),define("__pipe/drain",["require","exports","module","lodash"],function(t,i){var e=t("lodash");i.drain=function(){var t,i,s=arguments[0],r=arguments[1],h=this.maps.from;e.isArray(s)?(t=e.pick(h,s),i=r):e.isString(s)?(t={},t[s]=h[s],i=r):(t=h,i=s),i=i||{};{var n=i.force;this.src,this.dest}return e.each(t,function(t,i){var e=this.destGet(this.dest,t[0]);(n||!this.cacheCheck(i,e))&&this.srcSet(this.src,i,e)},this),this}}),define("__pipe/inject",["require","exports","module","lodash"],function(t,i){var e=t("lodash");i.inject=function(t,i){if(!this.src)throw new Error("No src for pipe");e.each(t,function(t,e){(!this.cacheCheck(e,t)||i&&i.force)&&this.srcSet(this.src,e,t)},this),this.pump(null,{force:!0})}}),define("__pipe/map",["require","exports","module","lodash"],function(t,i){var e=t("lodash");i.mapSingle=function(t,i,s){i=e.isArray(i)?i:[i],s&&"both"!==s?this.maps[s][t]=i:(this.maps.to[t]=i,this.maps.from[t]=i)},i.map=function(){if(e.isString(arguments[0]))this.mapSingle.apply(this,arguments);else if(e.isObject(arguments[0])){var t=arguments[1];e.each(arguments[0],function(i,s){var r;e.isString(i)?r=i:(r=i.dest,t=i.direction||t),this.mapSingle(s,r,t)},this)}return this},i.unmap=function(t){return e.each(this.maps,function(i){delete i[t]}),this}}),define("__pipe/cache",["require","exports","module"],function(t,i){i.cacheClear=function(){return this.cache={},this},i.cacheCheck=function(t,i){return this.cache?this.cache[t]!==i?(this.cache[t]=i,!1):!0:!1}}),define("pipe",["require","exports","module","subject","lodash","./__pipe/pump","./__pipe/drain","./__pipe/inject","./__pipe/map","./__pipe/cache"],function(t,i,e){var s=t("subject"),r=(t("lodash"),e.exports=s({initialize:function(t,i,e,s){s=s||{},this.srcGet=this.srcGet||this.get,this.srcSet=this.srcSet||this.set,this.destGet=this.destGet||this.get,this.destSet=this.destSet||this.set,s.cache!==!1&&this.cacheClear(),this.maps={from:{},to:{}},t&&this.from(t),i&&this.to(i),e&&this.map(e,s.direction)},get:function(t,i){return t[i]},set:function(t,i,e){return t[i]=e,t},from:function(t){return this.cacheClear(),this.src=t,this},to:function(t){return this.cacheClear(),this.dest=t,this}}));r.assignProto(t("./__pipe/pump")).assignProto(t("./__pipe/drain")).assignProto(t("./__pipe/inject")).assignProto(t("./__pipe/map")).assignProto(t("./__pipe/cache"))});
 /* jshint ignore:start */
 
 /* jshint ignore:end */
 
 define('__improved-model/pipe',['require','exports','module','pipe','lodash'],function defModelPump(require, exports, module) {
+	
 
 	var pipe = require('pipe'),
 		_    = require('lodash');
@@ -452,7 +455,7 @@ define('__improved-model/pipe',['require','exports','module','pipe','lodash'],fu
 	 * @param  {[type]} options [description]
 	 * @return {[type]}         [description]
 	 */
-	exports.pipe = function defineModelPipe(map, options) {
+	exports.pipe = function defineModelPipe(dest, map, options) {
 
 		// parse out the map
 		if (_.isString(map)) {
@@ -462,11 +465,8 @@ define('__improved-model/pipe',['require','exports','module','pipe','lodash'],fu
 			map[attribute] = attribute;
 		}
 
-		options = options || {};
-		options.source = this;
-
 		// create a pipe on the model pump
-		var pipe = modelPipe(map, options);
+		var pipe = modelPipe(this, dest, map, options);
 
 		// add pipe to the pipes array
 		this.pipes.push(pipe);
@@ -483,6 +483,7 @@ define('__improved-model/pipe',['require','exports','module','pipe','lodash'],fu
 /* jshint ignore:end */
 
 define('__improved-model/virtual/static',['require','exports','module','lodash'],function defBindAttribute(require, exports, module) {
+	
 
 	var _ = require('lodash');
 
@@ -524,7 +525,10 @@ define('__improved-model/virtual/static',['require','exports','module','lodash']
 	 */
 	exports.extendVirtualAttributes = function extendVirtualAttributes(virtuals) {
 
-		var extended = this.extend();
+
+		var inheritedVirtuals = _.create(this.prototype._virtualAttributes);
+
+		var extended = this.extend({ virtuals: inheritedVirtuals });
 
 		extended.defineVirtualAttribute(virtuals);
 
