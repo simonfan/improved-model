@@ -75,8 +75,11 @@ define(function (require, exports, module) {
 	model
 		.assignProto(require('./__improved-model/swtch'))
 		.assignProto(require('./__improved-model/virtual/prototype'))
-		.assignProto(require('./__improved-model/pipe'));
+		.assignProto(require('./__improved-model/pipe'))
+		.assignProto(require('./__improved-model/types/prototype'));
 
 	// define static methods
-	model.assignStatic(require('./__improved-model/virtual/static'));
+	model
+		.assignStatic(require('./__improved-model/virtual/static'))
+		.assignStatic(require('./__improved-model/types/static'));
 });

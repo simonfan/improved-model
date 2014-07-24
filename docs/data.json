@@ -25,6 +25,20 @@
             "fors": {},
             "namespaces": {}
         },
+        "js/__improved-model/types/prototype.js": {
+            "name": "js/__improved-model/types/prototype.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/__improved-model/types/static.js": {
+            "name": "js/__improved-model/types/static.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "js/__improved-model/virtual/prototype.js": {
             "name": "js/__improved-model/virtual/prototype.js",
             "modules": {},
@@ -138,6 +152,84 @@
             "file": "js/__improved-model/model-swtch/index.js",
             "line": 51,
             "description": "Override the when method in order to introduce a condition builder.",
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/types/prototype.js",
+            "line": 20,
+            "description": "Maps the attributes to their respective types.",
+            "type": "{Object}",
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/types/prototype.js",
+            "line": 30,
+            "description": "Override set in order to convert type on set :)",
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/types/prototype.js",
+            "line": 65,
+            "description": "Override get in ordre to allow 'getAs'",
+            "params": [
+                {
+                    "name": "attr",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "type",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/types/static.js",
+            "line": 20,
+            "params": [
+                {
+                    "name": "types",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/types/static.js",
+            "line": 33,
+            "description": "Defines attribute types",
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/__improved-model/types/static.js",
+            "line": 48,
+            "description": "Extends and defines attributes types.",
+            "params": [
+                {
+                    "name": "attributeTypes",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
             "class": ""
         },
         {
@@ -421,6 +513,30 @@
         {
             "message": "Missing item type\nOverride the when method in order to introduce a condition builder.",
             "line": " js/__improved-model/model-swtch/index.js:51"
+        },
+        {
+            "message": "Missing item type\nMaps the attributes to their respective types.",
+            "line": " js/__improved-model/types/prototype.js:20"
+        },
+        {
+            "message": "Missing item type\nOverride set in order to convert type on set :)",
+            "line": " js/__improved-model/types/prototype.js:30"
+        },
+        {
+            "message": "Missing item type\nOverride get in ordre to allow 'getAs'",
+            "line": " js/__improved-model/types/prototype.js:65"
+        },
+        {
+            "message": "Missing item type",
+            "line": " js/__improved-model/types/static.js:20"
+        },
+        {
+            "message": "Missing item type\nDefines attribute types",
+            "line": " js/__improved-model/types/static.js:33"
+        },
+        {
+            "message": "Missing item type\nExtends and defines attributes types.",
+            "line": " js/__improved-model/types/static.js:48"
         },
         {
             "message": "Missing item type\nProcesses the source values and sets the result onto the dest attribuet.",

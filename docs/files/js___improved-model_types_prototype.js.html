@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>js/index.js - improved-model</title>
+    <title>js/__improved-model/types/prototype.js - improved-model</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -82,94 +82,88 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: js/index.js</h1>
+                        <h1 class="file-heading">File: js/__improved-model/types/prototype.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-//     improved-model
-//     (c) simonfan
-//     improved-model is licensed under the MIT terms.
-
-/**
- * AMD and CJS module.
- *
- * @module improved-model
- */
-
 /* jshint ignore:start */
 if (typeof define !== &#x27;function&#x27;) { var define = require(&#x27;amdefine&#x27;)(module) }
 /* jshint ignore:end */
 
-define(function (require, exports, module) {
-	&#x27;use strict&#x27;;
+define(function defImproveModelSet(require, exports) {
+
+	var _     = require(&#x27;lodash&#x27;),
+		model = require(&#x27;lowercase-backbone&#x27;).model;
+
+	var types = exports.types = {};
+
+	types[&#x27;String&#x27;]  = function typeString(v) { return &#x27;&#x27; + v; };
+	types[&#x27;Integer&#x27;] = function typeInt(v) { return parseInt(v); };
+	types[&#x27;Int&#x27;]     = types[&#x27;Integer&#x27;];	// alias
+	types[&#x27;Float&#x27;]   = function typeFloat(v) { return parseFloat(v); };
+	types[&#x27;Array&#x27;]   = function typeArray(v) { return _.isArray(v) ? v : [v]; };
+	types[&#x27;Boolean&#x27;] = function typeBoolean(v) { return v ? true : false; }
 
 
-	var backbone = require(&#x27;lowercase-backbone&#x27;),
-		_        = require(&#x27;lodash&#x27;);
+	/**
+	 * Maps the attributes to their respective types.
+	 * @type {Object}
+	 */
+	exports.attributeTypes = {};
 
-	// direct reference to the backbone.model initialization logic
-	var _initializeModel = backbone.model.prototype.initialize;
 
+	// direct reference to the original set method
+	var _set = model.prototype.set;
 
-	// options that should be set directly to the object.
-	var improvedModelOptions = [&#x27;cases&#x27;, &#x27;executionType&#x27;];
+	/**
+	 * Override set in order to convert type on set :)
+	 */
+	exports.set = function iset() {
 
-	var model = module.exports = backbone.model.extend({
+		if (_.isString(arguments[0])) {
+			// arguments = [key, value, options]
 
-		/**
-		 * Overrride default model initialization.
-		 *
-		 * @param  {[type]} attributes [description]
-		 * @param  {[type]} options    [description]
-		 * @return {[type]}            [description]
-		 */
-		initialize: function initializeImprovedModel(attributes, options) {
+			var key     = arguments[0],
+				value   = arguments[1];
 
-			// initialize the backbone model
-			_initializeModel.apply(this, arguments);
+			// convert value to right type if there is
+			// a type defined on attributeTypes hash
+			var attrType = this.attributeTypes[key];
+			value = attrType ? this.types[attrType].call(this, value) : value;
 
-			// get options
-			options = options || {};
-			_.each(improvedModelOptions, function (opt) {
+			return _set.call(this, key, value, arguments[2]);
 
-				this[opt] = options[opt] || this[opt];
+		} else {
+			// arguments = [{ key: value }, options]
+			var values = arguments[0],
+				attributeTypes = this.attributeTypes;
+
+			values = _.mapValues(arguments[0], function (value, key) {
+
+				var attrType = attributeTypes[key];
+				return attrType ? this.types[attrType].call(this, value) : value;
 
 			}, this);
 
-			// INITIALIZATION.
-			this.initializeIMSwtch();
-
-			this.initializeIMVirtual();
-
-			this.initializeIMPipe();
-		},
-
-		/**
-		 * Determines which execution should be done (all|first)
-		 *
-		 * @type {String}
-		 */
-		executionType: &#x27;all&#x27;,
-		cases: {},
-
-
-		when: function whenThis(criteria, action, context) {
-			this.mainSwtch.when(criteria, action, context);
-
-			return this;
+			return _set.call(this, values, arguments[1])
 		}
-	});
+	};
 
-	model
-		.assignProto(require(&#x27;./__improved-model/swtch&#x27;))
-		.assignProto(require(&#x27;./__improved-model/virtual/prototype&#x27;))
-		.assignProto(require(&#x27;./__improved-model/pipe&#x27;))
-		.assignProto(require(&#x27;./__improved-model/types/prototype&#x27;));
 
-	// define static methods
-	model
-		.assignStatic(require(&#x27;./__improved-model/virtual/static&#x27;))
-		.assignStatic(require(&#x27;./__improved-model/types/static&#x27;));
+	/**
+	 * Override get in ordre to allow &#x27;getAs&#x27;
+	 * @param  {[type]} attr [description]
+	 * @param  {[type]} type [description]
+	 * @return {[type]}      [description]
+	 */
+	exports.getAs = function getAs(type, attr) {
+
+		// get value
+		var value = this.get(attr);
+
+		// convert and return
+		return this.types[type].call(this, value);
+	};
 });
 
     </pre>
