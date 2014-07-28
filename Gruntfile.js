@@ -118,12 +118,12 @@ module.exports = function (grunt) {
 
 					// exclude these modules AND their dependencies
 					// (excluding your bower dependencies)
-					exclude: ["lowercase-backbone", 'object-query', 'swtch'],
+					exclude: ["lowercase-backbone", 'object-query', 'swtch', 'pipe'],
 
 					// excludeShallow
 					excludeShallow: [],
 
-					optimize: 'uglify2',
+					optimize: 'none',
 
 					pragmas: {
 						exclude: true,
@@ -131,7 +131,7 @@ module.exports = function (grunt) {
 				}
 			},
 
-			dev: {
+			built: {
 				options: {
 					// base url where to look for module files
 					// and relative to which the module paths will be defined
@@ -140,7 +140,7 @@ module.exports = function (grunt) {
 					// module name
 					name: 'improved-model',
 					// output here
-					out: './built/improved-model.dev.js',
+					out: './built/improved-model.built.js',
 					// config file
 					mainConfigFile: 'amdconfig.js',
 
@@ -149,12 +149,12 @@ module.exports = function (grunt) {
 
 					// exclude these modules AND their dependencies
 					// (excluding your bower dependencies)
-					exclude: ["lowercase-backbone", 'object-query', 'swtch'],
+					exclude: ["lowercase-backbone", 'object-query', 'swtch', 'pipe'],
 
 					// excludeShallow
 					excludeShallow: [],
 
-					optimize: 'none',
+					optimize: 'uglify2',
 
 					pragmas: {
 						exclude: true,

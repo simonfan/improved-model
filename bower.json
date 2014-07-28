@@ -1,14 +1,14 @@
 {
   "name": "improved-model",
   "main": "built/improved-model.js",
-  "version": "0.4.8",
+  "version": "0.4.9",
   "description": "Improved BackboneJS model.",
   "dependencies": {
     "lowercase-backbone": "0.2.7",
     "object-query": "~0.1.4",
     "lodash": "~2.4.1",
     "swtch": "~0.2.2",
-    "pipe": "0.8.9"
+    "pipe": "~0.10.9"
   },
   "devDependencies": {
     "requirejs": "*",
@@ -19,6 +19,6 @@
   },
   "resolutions": {
     "subject": "0.5.9",
-    "pipe": "0.8.9"
+    "pipe": "~0.10.9"
   }
 }
