@@ -170,6 +170,22 @@ define(function (require, exports, module) {
 	model
 		.assignStatic(require(&#x27;./__improved-model/virtual/static&#x27;))
 		.assignStatic(require(&#x27;./__improved-model/types/static&#x27;));
+
+	// !!!!!!!!!!!!!!!!!!!!!!!!!
+	// DEFINE NEW EXTEND METHOD
+	// This new extension method allows for
+	// extending object properties.
+	//
+	// STUDY FURTHER!!!!!
+	// !!!!!!!!!!!!!!!!!!!!!!!!!
+	var _extend = model.extend;
+	model.extend = function extendImprovedModel(extensions, options) {
+
+
+		extensions._virtualAttributes = _.assign(_.create(this.prototype._virtualAttributes), extensions._virtualAttributes);
+
+		return _extend.call(this, extensions, options);
+	};
 });
 
     </pre>

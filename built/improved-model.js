@@ -757,5 +757,21 @@ define('improved-model',['require','exports','module','lowercase-backbone','loda
 	model
 		.assignStatic(require('./__improved-model/virtual/static'))
 		.assignStatic(require('./__improved-model/types/static'));
+
+	// !!!!!!!!!!!!!!!!!!!!!!!!!
+	// DEFINE NEW EXTEND METHOD
+	// This new extension method allows for
+	// extending object properties.
+	//
+	// STUDY FURTHER!!!!!
+	// !!!!!!!!!!!!!!!!!!!!!!!!!
+	var _extend = model.extend;
+	model.extend = function extendImprovedModel(extensions, options) {
+
+
+		extensions._virtualAttributes = _.assign(_.create(this.prototype._virtualAttributes), extensions._virtualAttributes);
+
+		return _extend.call(this, extensions, options);
+	};
 });
 

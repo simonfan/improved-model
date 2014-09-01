@@ -106,5 +106,24 @@
 			alice.get('fullName').should.eql('Alice Medeiros');
 		});
 
+
+		it('virtual attributes defined only at specific model', function () {
+			var person = model.extend({}),
+				plant  = model.extend({});
+
+			person.defineVirtualAttribute('fullName', ['name', 'lastName'], function (name, lastName) {
+				return name + ' ' + lastName;
+			});
+
+			var john      = person({ name: 'John', lastName: 'Smith' }),
+				sunflower = plant({ name: 'Sunflora', fullName: 'Plant Full Name' });
+
+
+			john.get('fullName').should.eql('John Smith');
+
+
+			// expect the sunflower fullName not to be overwritten.
+			sunflower.get('fullName').should.eql('Plant Full Name');
+		})
 	});
 });
